@@ -1,0 +1,297 @@
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0001
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000001        *========================= WS-TESTIO ============================*
+000002        * Authors: Brian D Pead
+000003        *
+000004        * License: MIT
+000005        *
+000006        * Description: Test writing a variable length record
+000007        *     sequential file. This shows that GnuCOBOL creates RDWs
+000008        *     similar to the IBM mainframe (when COB_VARSEQ_FORMAT=0, the
+000009        *     default), but the RDW record length does not include itself,
+000010        *     i.e. it is 4 less than the mainframe.
+000011        *
+000012        *     Environment name: COB_VARSEQ_FORMAT
+000013        *     Parameter name:   varseq_format
+000014        *     Purpose:          Declare format used for variable length
+000015        *                       sequential files
+000016        *                       - different types and lengths precede each
+000017        *                         record
+000018        *                       - ’length’ is the data length, does not
+000019        *                         include the prefix
+000020        *     Type: 0 means 2 byte record length (big-endian) + 2 NULs
+000021        *           1 means 4 byte record length (big-endian)
+000022        *           2 means 4 byte record length (local machine int)
+000023        *           3 means 2 byte record length (big-endian)
+000024        *     Default: 0
+000025        *
+000026        * Date        Version  Description
+000027        * ----        -------  -----------
+000028        * 2020-01-18  0.1      First release
+000029        *
+000030        *================================================================*
+000031
+000032         IDENTIFICATION DIVISION.
+000033        *========================
+000034
+000035         PROGRAM-ID.                 TESTIO2.
+000036
+000037         ENVIRONMENT DIVISION.
+000038        *=====================
+000039
+000040         CONFIGURATION SECTION.
+000041        *----------------------
+000042
+000043         SOURCE-COMPUTER.
+000044             IBM-Z15.
+000045        *    IBM-Z15 DEBUGGING MODE.
+000046
+000047         INPUT-OUTPUT SECTION.
+000048        *---------------------
+000049
+000050         FILE-CONTROL.
+000051             SELECT TESTIO2O         ASSIGN 'Data\TESTIO2.Output.bin'
+000052                                     ORGANIZATION SEQUENTIAL.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0002
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000053        /
+000054         DATA DIVISION.
+000055        *==============
+000056
+000057         FILE SECTION.
+000058        *-------------
+000059
+000060         FD  TESTIO2O
+000061             RECORD VARYING 25 TO 15000
+000062             DEPENDING W-RECLEN.
+000063
+000064         01  TESTIO2O-REC.
+000065             05  TO-CHAR             PIC X           OCCURS 25 TO 15000
+000066                                                     DEPENDING W-RECLEN
+000067                                                     INDEXED TO-DX.
+000068
+000069         WORKING-STORAGE SECTION.
+000070        *------------------------
+000071
+000072         01  W-TESTIO2O-RECS         PIC 9(09)  COMP VALUE 0.
+000073         01  W-RANDOM-NO             PIC V9(09) COMP.
+000074         01  W-RECLEN                PIC S9(09) COMP.
+000075         01  W-RECLEN-MIN            PIC S9(09) COMP VALUE 25.
+000076         01  W-RECLEN-MAX            PIC S9(09) COMP VALUE 15000.
+000077         01  W-OUTPUT-MIN            PIC 9(09)  COMP VALUE 999999999.
+000078         01  W-OUTPUT-MAX            PIC 9(09)  COMP VALUE 0.
+000079         01  W-QUOTIENT              PIC 9(09)  COMP.
+000080         01  W-REMAINDER             PIC 9(09)  COMP.
+000081         01  W-DISP-NUM              PIC ZZ,ZZZ,ZZ9.
+000082
+000083         01  W-ERROR-MSG             PIC X(21)       VALUE
+000084             '**** TESTIO2 error: '.
+000085
+000086         01  W-COMPILED-DATE.
+000087             05  W-COMPILED-DATE-YYYY
+000088                                     PIC X(04).
+000089             05  W-COMPILED-DATE-MM  PIC X(02).
+000090             05  W-COMPILED-DATE-DD  PIC X(02).
+000091             05  W-COMPILED-TIME-HH  PIC X(02).
+000092             05  W-COMPILED-TIME-MM  PIC X(02).
+000093             05  W-COMPILED-TIME-SS  PIC X(02).
+000094             05  FILLER              PIC X(07).
+000095
+000096         01  W-CHAR-BIN              PIC S9(04) COMP.
+000097         01  FILLER REDEFINES W-CHAR-BIN.
+000098             05  FILLER              PIC X.
+000099             05  W-CHAR              PIC X.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0003
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000100        /
+000101         PROCEDURE DIVISION.
+000102        *===================
+000103
+000104         MAIN.
+000105        *-----
+000106
+000107             PERFORM SUB-1000-START-UP THRU SUB-1000-EXIT
+000108
+000109             PERFORM SUB-2000-PROCESS THRU SUB-2000-EXIT
+000110                 UNTIL W-TESTIO2O-RECS >= 12345
+000111
+000112             PERFORM SUB-3000-SHUT-DOWN THRU SUB-3000-EXIT
+000113             .
+000114         MAIN-EXIT.
+000115             STOP RUN.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0004
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000116        /
+000117         SUB-1000-START-UP.
+000118        *------------------
+000119
+000120             MOVE FUNCTION WHEN-COMPILED
+000121                                     TO W-COMPILED-DATE
+000122
+000123             DISPLAY 'TESTIO2 compiled on '
+000124                 W-COMPILED-DATE-YYYY '/'
+000125                 W-COMPILED-DATE-MM   '/'
+000126                 W-COMPILED-DATE-DD   ' at '
+000127                 W-COMPILED-TIME-HH   ':'
+000128                 W-COMPILED-TIME-MM   ':'
+000129                 W-COMPILED-TIME-SS
+000130
+000131             OPEN OUTPUT TESTIO2O
+000132             .
+000133         SUB-1000-EXIT.
+000134             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0005
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000135        /
+000136         SUB-2000-PROCESS.
+000137        *-----------------
+000138
+000139             MOVE FUNCTION RANDOM    TO W-RANDOM-NO
+000140             COMPUTE W-RECLEN        =  W-RANDOM-NO
+000141                                        * (W-RECLEN-MAX
+000142                                           - W-RECLEN-MIN
+000143                                           + 1)
+000144                                        + W-RECLEN-MIN
+000145
+000146        *    DISPLAY 'W-RECLEN = '
+000147        *            W-RECLEN
+000148
+000149             IF      W-RECLEN < W-OUTPUT-MIN
+000150                 MOVE W-RECLEN       TO W-OUTPUT-MIN
+000151             END-IF
+000152
+000153             IF      W-RECLEN > W-OUTPUT-MAX
+000154                 MOVE W-RECLEN       TO W-OUTPUT-MAX
+000155             END-IF
+000156
+000157             PERFORM SUB-2100-POPULATE-REC THRU SUB-2100-EXIT
+000158
+000159             PERFORM SUB-9100-WRITE-TESTIO2O THRU SUB-9100-EXIT
+000160             .
+000161         SUB-2000-EXIT.
+000162             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0006
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000163        /
+000164         SUB-2100-POPULATE-REC.
+000165        *----------------------
+000166
+000167             COMPUTE W-CHAR-BIN      =  FUNCTION RANDOM * 256
+000168
+000169             PERFORM VARYING TO-DX FROM 1 BY 1
+000170                       UNTIL TO-DX > W-RECLEN
+000171                 MOVE W-CHAR         TO TO-CHAR(TO-DX)
+000172             END-PERFORM
+000173             .
+000174         SUB-2100-EXIT.
+000175             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0007
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000176        /
+000177         SUB-3000-SHUT-DOWN.
+000178        *-------------------
+000179
+000180             CLOSE TESTIO2O
+000181
+000182             DISPLAY 'TESTIO2 completed'
+000183             MOVE W-OUTPUT-MIN       TO W-DISP-NUM
+000184             DISPLAY 'Shortest record length:   '
+000185                     W-DISP-NUM
+000186             MOVE W-OUTPUT-MAX       TO W-DISP-NUM
+000187             DISPLAY 'Longest  record length:   '
+000188                     W-DISP-NUM
+000189             MOVE W-TESTIO2O-RECS    TO W-DISP-NUM
+000190             DISPLAY 'TESTIO2O records written: '
+000191                     W-DISP-NUM
+000192             .
+000193         SUB-3000-EXIT.
+000194             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0008
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000195        /
+000196         SUB-9100-WRITE-TESTIO2O.
+000197        *------------------------
+000198
+000199             WRITE TESTIO2O-REC
+000200
+000201             ADD  1                  TO W-TESTIO2O-RECS
+000202
+000203             DIVIDE W-TESTIO2O-RECS  BY 10000
+000204                                 GIVING W-QUOTIENT
+000205                              REMAINDER W-REMAINDER
+000206
+000207             IF      W-REMAINDER = 0
+000208                 MOVE W-TESTIO2O-RECS
+000209                                     TO W-DISP-NUM
+000210                 DISPLAY '    Records written: '
+000211                         W-DISP-NUM
+000212             END-IF
+000213             .
+000214         SUB-9100-EXIT.
+000215             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 12:22:33 2020  Page 0009
+
+SIZE  TYPE           LVL  NAME                           PICTURE
+
+15000 FILE                TESTIO2O
+15000 GROUP          01   TESTIO2O-REC
+00001 ALPHANUMERIC   05   TO-CHAR                        X, OCCURS 25 TO 15000
+
+      WORKING-STORAGE SECTION
+
+00004 NUMERIC        01   W-TESTIO2O-RECS                9(09) COMP
+
+00004 NUMERIC        01   W-RANDOM-NO                    V9(09) COMP
+
+00004 NUMERIC        01   W-RECLEN                       S9(09) COMP
+
+00004 NUMERIC        01   W-RECLEN-MIN                   S9(09) COMP
+
+00004 NUMERIC        01   W-RECLEN-MAX                   S9(09) COMP
+
+00004 NUMERIC        01   W-OUTPUT-MIN                   9(09) COMP
+
+00004 NUMERIC        01   W-OUTPUT-MAX                   9(09) COMP
+
+00004 NUMERIC        01   W-QUOTIENT                     9(09) COMP
+
+00004 NUMERIC        01   W-REMAINDER                    9(09) COMP
+
+00010 NUMERIC        01   W-DISP-NUM                     ZZ,ZZZ,ZZ9
+
+00021 ALPHANUMERIC   01   W-ERROR-MSG                    X(21)
+
+00021 GROUP          01   W-COMPILED-DATE
+00004 ALPHANUMERIC   05   W-COMPILED-DATE-YYYY           X(04)
+00002 ALPHANUMERIC   05   W-COMPILED-DATE-MM             X(02)
+00002 ALPHANUMERIC   05   W-COMPILED-DATE-DD             X(02)
+00002 ALPHANUMERIC   05   W-COMPILED-TIME-HH             X(02)
+00002 ALPHANUMERIC   05   W-COMPILED-TIME-MM             X(02)
+00002 ALPHANUMERIC   05   W-COMPILED-TIME-SS             X(02)
+00007 ALPHANUMERIC   05   FILLER                         X(07)
+
+00002 NUMERIC        01   W-CHAR-BIN                     S9(04) COMP
+
+00002 GROUP          01   FILLER, REDEFINES W-CHAR-BIN
+00001 ALPHANUMERIC   05   FILLER                         X
+00001 ALPHANUMERIC   05   W-CHAR                         X
+
+
+0 warnings in compilation group
+0 errors in compilation group
