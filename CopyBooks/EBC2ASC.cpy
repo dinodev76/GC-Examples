@@ -5,7 +5,7 @@
       *
       * Date        Version  Description
       * ----        -------  -----------
-      * 2020-01-12  0.1      First release
+      * 2020-01-18  0.1      First release
       *================================================================*
 
        01  W-EBCDIC-TO-ASCII-TABLE.
@@ -32,7 +32,8 @@
            05  FILLER-A0-AF        PIC X(32)       VALUE
                'E67E737475767778797AADA8D45BD6D7'.
            05  FILLER-B0-BF        PIC X(32)       VALUE
-               '9B9C9DFA9FB1B0ACABFCAAFEE45DBFE7'.
+      *                             [ ]
+               '9B9C9DFA9FB1B0ACABFC5B5DE45DBFE7'.
            05  FILLER-C0-CF        PIC X(32)       VALUE
                '7B414243444546474849E8939495A2ED'.
            05  FILLER-D0-DF        PIC X(32)       VALUE

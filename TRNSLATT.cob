@@ -82,9 +82,13 @@
 
        01  W-TRNSLAT-CONTROL.      COPY TRNSLATL.
 
-       COPY ASC2EBC.
+      * COPY ASC2EBC.
 
-       COPY EBC2ASC.
+      * COPY EBC2ASC.
+
+      * COPY I037T437.
+
+       COPY I437T037.
       /
        PROCEDURE DIVISION.
       *===================
@@ -134,8 +138,10 @@
 
            CALL W-TRNSLAT-PROG  USING W-TRNSLAT-CONTROL
                                       TESTOUT-REC
-                                      W-ASCII-TO-EBCDIC-TABLE
+      *                                W-ASCII-TO-EBCDIC-TABLE
       *                                W-EBCDIC-TO-ASCII-TABLE
+      *                                W-IBM037-TO-IBM437-TABLE
+                                      W-IBM437-TO-IBM037-TABLE
 
            IF      TC-RESPONSE-GOOD
                PERFORM SUB-9200-WRITE-TESTOUT THRU SUB-9200-EXIT
