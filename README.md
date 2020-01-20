@@ -71,6 +71,10 @@ These instructions will get you a copy of the project up and running on your loc
 
     To compile and run it from VS Code, click on TESTIO2.cob and select Terminal/Run Task.../Compile and Run Selected Program.
 
+4. **TRNSLATT**: Test converting a file from ASCII to EBCDIC, using subroutine **TRNSLAT**.
+
+    To compile and run it from VS Code, select Terminal/Run Task.../Compile and Run TRNSLATT.
+
 ## Authors
 
 * **Brian D Pead** - *Initial work*

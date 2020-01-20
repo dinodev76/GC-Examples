@@ -15,7 +15,7 @@
       *                       sequential files
       *                       - different types and lengths precede each
       *                         record
-      *                       - ’length’ is the data length, does not
+      *                       - length is the data length, does not
       *                         include the prefix
       *     Type: 0 means 2 byte record length (big-endian) + 2 NULs
       *           1 means 4 byte record length (big-endian)

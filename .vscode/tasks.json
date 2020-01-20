@@ -24,7 +24,7 @@
                 "${fileBasenameNoExtension}.exe",
                 "${fileBasenameNoExtension}.cob",
                 "-I${workspaceFolder}\\CopyBooks",
-                "-std=cobol2014",
+                "-std=cobol2002",
                 "-T",
                 "${workspaceFolder}\\Listings\\${fileBasenameNoExtension}.lst",
                 "--tsymbols",
@@ -108,6 +108,54 @@
             [
                 "${workspaceFolder}\\Data\\TESTIO2.Output.bin",
                 "MF2GC"
+            ],
+            "problemMatcher": "$gnucobol-cobc"
+        },
+        {
+            "label": "Compile TRNSLATT",
+            "type": "shell",
+            "command": "C:\\GnuCOBOL\\bin\\cobc",
+            "args":
+            [
+                "-x",
+                "-o",
+                "TRNSLATT.exe",
+                "TRNSLATT.cob",
+                "TRNSLAT.cob",
+                "-I${workspaceFolder}\\CopyBooks",
+                "-std=cobol2002",
+                "-T",
+                "${workspaceFolder}\\Listings\\TRNSLATT.lst",
+                "--tsymbols",
+                "-v",
+                "-debug"
+            ],
+            "problemMatcher": "$gnucobol-cobc",
+            "group":
+            {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile and Run TRNSLATT",
+            "type": "shell",
+            "command": "${workspaceFolder}\\TRNSLATT.exe",
+            "args": 
+            [
+            ],
+            "dependsOn":
+            [
+                "Compile TRNSLATT"
+            ],
+            "problemMatcher": "$gnucobol-cobc"
+        },
+        {
+            "label": "Run TRNSLATT",
+            "type": "shell",
+            "command": "${workspaceFolder}\\TRNSLATT.exe",
+            "args": 
+            [
             ],
             "problemMatcher": "$gnucobol-cobc"
         },

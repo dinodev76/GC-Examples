@@ -1,0 +1,359 @@
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0001
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000001        *=========================== TRNSLAT ============================*
+000002        * Authors: Brian D Pead
+000003        *
+000004        * License: MIT
+000005        *
+000006        * Date        Version  Description
+000007        * ----        -------  -----------
+000008        * 2020-01-12  0.1      First release
+000009        *================================================================*
+000010
+000011         IDENTIFICATION DIVISION.
+000012        *========================
+000013
+000014         PROGRAM-ID.             TRNSLAT.
+000015
+000016         ENVIRONMENT DIVISION.
+000017        *=====================
+000018
+000019         CONFIGURATION SECTION.
+000020        *----------------------
+000021
+000022         SOURCE-COMPUTER.
+000023             IBM-Z15.
+000024        *    IBM-Z15 DEBUGGING MODE.
+000025
+000026         INPUT-OUTPUT SECTION.
+000027        *---------------------
+000028
+000029         FILE-CONTROL.
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0002
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000030        /
+000031         DATA DIVISION.
+000032        *==============
+000033
+000034         FILE SECTION.
+000035        *-------------
+000036
+000037         WORKING-STORAGE SECTION.
+000038        *------------------------
+000039
+000040         01  W-SUB-1                 PIC S9(04) COMP.
+000041         01  W-SUB-2                 PIC S9(04) COMP.
+000042
+000043         01  FILLER                  PIC X(01)       VALUE 'Y'.
+000044             88  W-FIRST-CALL                        VALUE 'Y'.
+000045             88  W-NOT-FIRST-CALL                    VALUE 'N'.
+000046
+000047         01  W-COMPILED-DATE.
+000048             05  W-COMPILED-DATE-YYYY
+000049                                     PIC X(04).
+000050             05  W-COMPILED-DATE-MM  PIC X(02).
+000051             05  W-COMPILED-DATE-DD  PIC X(02).
+000052             05  W-COMPILED-TIME-HH  PIC X(02).
+000053             05  W-COMPILED-TIME-MM  PIC X(02).
+000054             05  W-COMPILED-TIME-SS  PIC X(02).
+000055             05  FILLER              PIC X(07).
+000056
+000057         01  W-CHAR-BIN              PIC S9(04)      COMP.
+000058         01  FILLER REDEFINES W-CHAR-BIN.
+000059             05  W-CHAR-1            PIC X(01).
+000060             05  W-CHAR-2            PIC X(01).
+000061
+000062         01  W-CONVERSION-TABLE-HEX                  VALUE LOW-VALUES.
+000063             05  FILLER                              OCCURS 256.
+000064                 10  FILLER                          OCCURS 2.
+000065                     15  W-CONV-HEX  PIC X(01).
+000066                     15  W-CONV-DIG REDEFINES W-CONV-HEX
+000067                                     PIC 9(01).
+000068
+000069         01  W-HEX-VALUE             PIC S9(04) COMP OCCURS 2.
+error: level 01 item 'W-HEX-VALUE' cannot have a OCCURS clause
+000070
+000071         01  W-CONVERSION-TABLE-BIN.
+000072             05  FILLER                              OCCURS 256.
+000073                 10  W-CONV-BIN      PIC S9(04)      COMP.
+000074                 10  FILLER REDEFINES W-CONV-BIN.
+000075                     15  FILLER      PIC X(01).
+000076                     15  W-CONV-CHAR PIC X(01).
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0003
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000077        /
+000078         LINKAGE SECTION.
+000079        *----------------
+000080
+000081         01  L-CONTROL.              COPY TRNSLATL.
+000001C       *=========================== TRNSLATL ===========================*
+000002C       * Authors: Brian D Pead
+000003C       *
+000004C       * License: MIT
+000005C       *
+000006C       * Date        Version  Description
+000007C       * ----        -------  -----------
+000008C       * 2020-01-18  0.1      First release
+000009C       *================================================================*
+000010C
+000011C       **** Input fields:
+000012C       ****     TC-FIELD-CNT:
+000013C       ****         Set appropriate 88 level for  desired function.
+000014C       ****     TC-SEED-NO:
+000015C       ****         If > 0, used to set seed to get same random
+000016C       ****         sequence on each call.
+000017C       ****     TC-SEED-TEXT:
+000018C       ****         If TC-SEED-NO = 0 and this is not spaces, used to
+000019C       ****         set seed to get same random sequence on each call
+000020C       ****         (e.g. to get same fake name each time real name is
+000021C       ****         being anonymized, move real name to TC-SEED-TEXT
+000022C       ****         before call).
+000023C
+000024C       *01  TRNSLATL-CONTROL.
+000025C            05  TC-FIELD-CNT        PIC S9(09) COMP VALUE 0.
+000026C            05  TC-FIELD-SPEC                       OCCURS 256
+000027C                                                    INDEXED TCF-DX.
+000028C                10  TC-FIELD-POS    PIC S9(09) COMP.
+000029C                10  TC-FIELD-LEN    PIC S9(09) COMP.
+000030C
+000031C       **** Output fields:
+000032C       ****     TC-RESPONSE-CODE
+000033C       ****         Use 88 levels to determine result of calls.
+000034C       ****     TC-RESPONSE-MSG
+000035C       ****         Non-space if bad response.
+000036C
+000037C            05  TC-RESPONSE-CODE    PIC 9(4).
+000038C                88  TC-RESPONSE-GOOD                VALUE 0.
+000039C                88  TC-RESPONSE-TABLE-ERROR         VALUE 10.
+000040C
+000041C            05  TC-RESPONSE-MSG     PIC X(80).
+000082
+000083         01  L-RECORD-TO-TRANSLATE.
+000084             05  L-REC-CHAR          PIC X(01)       OCCURS 32768
+000085                                                     INDEXED LR-DX.
+000086
+000087         01  L-CONVERSION-TABLE.
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0004
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000088             05  FILLER                              OCCURS 256
+000089                                                     INDEXED LC-DX.
+000090                 10  L-CONV-HEX-1    PIC X(01).
+000091                 10  L-CONV-HEX-2    PIC X(01).
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0005
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000092        /
+000093         PROCEDURE DIVISION
+000094        *==================
+000095             USING L-CONTROL
+000096                   L-RECORD-TO-TRANSLATE
+000097                   L-CONVERSION-TABLE.
+000098
+000099         MAIN.
+error: executable program requested but PROCEDURE/ENTRY has USING clause
+000100        *-----
+000101
+000102             PERFORM SUB-1000-START-UP THRU SUB-1000-EXIT
+000103
+000104             PERFORM SUB-2000-PROCESS THRU SUB-2000-EXIT
+000105                 VARYING TCF-DX FROM 1 BY 1
+000106                   UNTIL TCF-DX > TC-FIELD-CNT
+000107             .
+000108         MAIN-EXIT.
+000109             GOBACK.
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0006
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000110        /
+000111         SUB-1000-START-UP.
+000112        *------------------
+000113
+000114             SET  TC-RESPONSE-GOOD   TO TRUE
+000115             MOVE SPACES             TO TC-RESPONSE-MSG
+000116
+000117             IF      W-CONVERSION-TABLE-HEX NOT = L-CONVERSION-TABLE
+000118                 MOVE L-CONVERSION-TABLE
+000119                                     TO W-CONVERSION-TABLE-HEX
+000120
+000121                 PERFORM SUB-1100-CONVERT-HEX-TO-BIN THRU SUB-1100-EXIT
+000122                     VARYING W-SUB-1 FROM 1 BY 1
+000123                       UNTIL W-SUB-1 > 256
+000124             END-IF
+000125
+000126             IF      W-NOT-FIRST-CALL
+000127                 GO TO SUB-1000-EXIT
+000128             END-IF
+000129
+000130             SET W-NOT-FIRST-CALL    TO TRUE
+000131             MOVE FUNCTION WHEN-COMPILED
+000132                                     TO W-COMPILED-DATE
+000133
+000134             DISPLAY 'TRNSLAT compiled on '
+000135                 W-COMPILED-DATE-YYYY '/'
+000136                 W-COMPILED-DATE-MM   '/'
+000137                 W-COMPILED-DATE-DD   ' at '
+000138                 W-COMPILED-TIME-HH   ':'
+000139                 W-COMPILED-TIME-MM   ':'
+000140                 W-COMPILED-TIME-SS
+000141             .
+000142         SUB-1000-EXIT.
+000143             EXIT.
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0007
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000144        /
+000145         SUB-1100-CONVERT-HEX-TO-BIN.
+000146        *----------------------------
+000147
+000148             PERFORM VARYING W-SUB-2 FROM 1 BY 1
+000149                       UNTIL W-SUB-2 > 2
+000150
+000151                 IF      W-CONV-HEX(W-SUB-1 W-SUB-2) NUMERIC
+000152                     MOVE W-CONV-DIG(W-SUB-1 W-SUB-2)
+000153                                     TO W-HEX-VALUE(W-SUB-2)
+000154                 ELSE
+000155                     EVALUATE W-CONV-HEX(W-SUB-1 W-SUB-2)
+000156                       WHEN 'A'
+000157                         MOVE 10     TO W-HEX-VALUE(W-SUB-2)
+000158                       WHEN 'B'
+000159                         MOVE 11     TO W-HEX-VALUE(W-SUB-2)
+000160                       WHEN 'C'
+000161                         MOVE 12     TO W-HEX-VALUE(W-SUB-2)
+000162                       WHEN 'D'
+000163                         MOVE 13     TO W-HEX-VALUE(W-SUB-2)
+000164                       WHEN 'E'
+000165                         MOVE 14     TO W-HEX-VALUE(W-SUB-2)
+000166                       WHEN 'F'
+000167                         MOVE 15     TO W-HEX-VALUE(W-SUB-2)
+000168                       WHEN OTHER
+000169                         SET  TC-RESPONSE-TABLE-ERROR
+000170                                     TO TRUE
+000171                        MOVE 'Invalid hex character in conv table: '
+000172                                     TO TC-RESPONSE-MSG
+000173                        MOVE W-CONV-HEX(W-SUB-1 W-SUB-2)
+000174                                     TO TC-RESPONSE-MSG(38 : 1)
+000175                     END-EVALUATE
+000176                 END-IF
+000177             END-PERFORM
+000178
+000179             COMPUTE W-CONV-BIN(W-SUB-1)
+000180                                     =  W-HEX-VALUE(1)
+000181                                        * 16
+000182                                        + W-HEX-VALUE(2)
+000183             .
+000184         SUB-1100-EXIT.
+000185             EXIT.
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0008
+
+LINE    PG/LN  A...B............................................................SEQUENCE
+
+000186        /
+000187         SUB-2000-PROCESS.
+000188        *-----------------
+000189
+000190             SET  LR-DX              TO TC-FIELD-POS(TCF-DX)
+000191
+000192             PERFORM TC-FIELD-LEN(TCF-DX) TIMES
+000193                 MOVE X'00'          TO W-CHAR-1
+000194                 MOVE L-REC-CHAR(LR-DX)
+000195                                     TO W-CHAR-2
+000196                 ADD  1
+000197                      W-CHAR-BIN GIVING W-SUB-2
+000198                 MOVE W-CONV-CHAR(W-SUB-2)
+000199                                     TO L-REC-CHAR(LR-DX)
+000200                 SET  LR-DX       UP BY 1
+000201             END-PERFORM
+000202             .
+000203         SUB-2000-EXIT.
+000204             EXIT.
+000205
+warning: line not terminated by a newline
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0009
+
+SIZE  TYPE           LVL  NAME                           PICTURE
+
+      WORKING-STORAGE SECTION
+
+00002 NUMERIC        01   W-SUB-1                        S9(04) COMP
+
+00002 NUMERIC        01   W-SUB-2                        S9(04) COMP
+
+00001 ALPHANUMERIC   01   FILLER                         X(01)
+      CONDITIONAL    88   W-FIRST-CALL
+      CONDITIONAL    88   W-NOT-FIRST-CALL
+
+00021 GROUP          01   W-COMPILED-DATE
+00004 ALPHANUMERIC   05   W-COMPILED-DATE-YYYY           X(04)
+00002 ALPHANUMERIC   05   W-COMPILED-DATE-MM             X(02)
+00002 ALPHANUMERIC   05   W-COMPILED-DATE-DD             X(02)
+00002 ALPHANUMERIC   05   W-COMPILED-TIME-HH             X(02)
+00002 ALPHANUMERIC   05   W-COMPILED-TIME-MM             X(02)
+00002 ALPHANUMERIC   05   W-COMPILED-TIME-SS             X(02)
+00007 ALPHANUMERIC   05   FILLER                         X(07)
+
+00002 NUMERIC        01   W-CHAR-BIN                     S9(04) COMP
+
+00002 GROUP          01   FILLER, REDEFINES W-CHAR-BIN
+00001 ALPHANUMERIC   05   W-CHAR-1                       X(01)
+00001 ALPHANUMERIC   05   W-CHAR-2                       X(01)
+
+00512 GROUP          01   W-CONVERSION-TABLE-HEX
+00512 GROUP          05   FILLER                         OCCURS 256
+00002 GROUP          10   FILLER                         OCCURS 2
+00001 ALPHANUMERIC   15   W-CONV-HEX                     X(01)
+00001 NUMERIC        15   W-CONV-DIG                     9(01), REDEFINES W-CONV-HEX
+
+00002 NUMERIC        01   W-HEX-VALUE                    S9(04) COMP, OCCURS 2
+
+00512 GROUP          01   W-CONVERSION-TABLE-BIN
+00512 GROUP          05   FILLER                         OCCURS 256
+00002 NUMERIC        10   W-CONV-BIN                     S9(04) COMP
+00002 GROUP          10   FILLER, REDEFINES W-CONV-BIN
+00001 ALPHANUMERIC   15   FILLER                         X(01)
+00001 ALPHANUMERIC   15   W-CONV-CHAR                    X(01)
+
+      LINKAGE SECTION
+
+02136 GROUP          01   L-CONTROL
+00004 NUMERIC        05   TC-FIELD-CNT                   S9(09) COMP
+02048 GROUP          05   TC-FIELD-SPEC                  OCCURS 256
+00004 NUMERIC        10   TC-FIELD-POS                   S9(09) COMP
+00004 NUMERIC        10   TC-FIELD-LEN                   S9(09) COMP
+00004 NUMERIC        05   TC-RESPONSE-CODE               9(4)
+      CONDITIONAL    88   TC-RESPONSE-GOOD
+      CONDITIONAL    88   TC-RESPONSE-TABLE-ERROR
+00080 ALPHANUMERIC   05   TC-RESPONSE-MSG                X(80)
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0010
+
+SIZE  TYPE           LVL  NAME                           PICTURE
+
+32768 GROUP          01   L-RECORD-TO-TRANSLATE
+00001 ALPHANUMERIC   05   L-REC-CHAR                     X(01), OCCURS 32768
+
+00512 GROUP          01   L-CONVERSION-TABLE
+00512 GROUP          05   FILLER                         OCCURS 256
+00001 ALPHANUMERIC   10   L-CONV-HEX-1                   X(01)
+00001 ALPHANUMERIC   10   L-CONV-HEX-2                   X(01)
+
+
+GnuCOBOL 3.0-rc1.0      TRNSLAT.cob                                                   Sun Jan 19 15:24:30 2020  Page 0011
+
+Error/Warning summary:
+
+TRNSLAT.cob:205: warning: line not terminated by a newline
+TRNSLAT.cob:69: error: level 01 item 'W-HEX-VALUE' cannot have a OCCURS clause
+TRNSLAT.cob:99: error: executable program requested but PROCEDURE/ENTRY has USING clause
+
+1 warning in compilation group
+2 errors in compilation group
