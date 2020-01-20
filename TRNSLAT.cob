@@ -89,10 +89,7 @@
                                                    INDEXED LR-DX.
 
        01  L-CONVERSION-TABLE.
-           05  FILLER                              OCCURS 256
-                                                   INDEXED LC-DX.
-               10  L-CONV-HEX-1    PIC X(01).
-               10  L-CONV-HEX-2    PIC X(01).
+           05  FILLER              PIC X(02)       OCCURS 256.
       /
        PROCEDURE DIVISION 
       *==================

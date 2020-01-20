@@ -42,8 +42,3 @@
                '36590838BC39A0BFCA3AFE3B04CFDA14'.
            05  FILLER-F0-FF        PIC X(32)       VALUE
                'E18F4675FDEBEEED90EFB3FBB9EABBFF'.
-       01  FILLER REDEFINES W-ASCII-TO-EBCDIC-TABLE.
-           05  FILLER                              OCCURS 256
-                                                   INDEXED W-A2E-DX.
-               10  W-A2E-HEX-1     PIC X(01).
-               10  W-A2E-HEX-2     PIC X(01).
