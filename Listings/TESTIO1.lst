@@ -1,8 +1,8 @@
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Jan 19 23:21:47 2020  Page 0001
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0001
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000001        *========================== WS-TESTIO ===========================*
+000001        *=========================== TESTIO1 ============================*
 000002        * Authors: Brian D Pead
 000003        *
 000004        * License: MIT
@@ -41,7 +41,7 @@ LINE    PG/LN  A...B............................................................
 000037             SELECT TESTIO1I         ASSIGN 'Data\TESTIO1.Input.txt'
 000038        *                             ORGANIZATION SEQUENTIAL.
 000039                                     ORGANIZATION LINE SEQUENTIAL.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Jan 19 23:21:47 2020  Page 0002
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0002
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -52,126 +52,135 @@ LINE    PG/LN  A...B............................................................
 000044         FILE SECTION.
 000045        *-------------
 000046
-000047         FD  TESTIO1I.
-000048
-000049         01  TESTIO1I-REC            PIC X(80).
-000050
-000051         WORKING-STORAGE SECTION.
-000052        *------------------------
+000047         FD  TESTIO1I
+000048             RECORD VARYING 1 TO 80  *> Comment out if switching to
+000049             DEPENDING W-RECLEN      *> ORGANIZATION SEQUENTIAL
+000050             .
+000051
+000052         01  TESTIO1I-REC            PIC X(80).
 000053
-000054         01  W-TESTIO1I-RECS         PIC 9(09)  COMP VALUE 0.
-000055         01  W-DISP-NUM              PIC ZZ,ZZZ,ZZ9.
+000054         WORKING-STORAGE SECTION.
+000055        *------------------------
 000056
-000057         01  FILLER                  PIC X(01)       VALUE 'N'.
-000058             88  W-EOF                               VALUE 'Y'.
-000059
-000060         01  W-COMPILED-DATE.
-000061             05  W-COMPILED-DATE-YYYY
-000062                                     PIC X(04).
-000063             05  W-COMPILED-DATE-MM  PIC X(02).
-000064             05  W-COMPILED-DATE-DD  PIC X(02).
-000065             05  W-COMPILED-TIME-HH  PIC X(02).
-000066             05  W-COMPILED-TIME-MM  PIC X(02).
-000067             05  W-COMPILED-TIME-SS  PIC X(02).
-000068             05  FILLER              PIC X(07).
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Jan 19 23:21:47 2020  Page 0003
+000057         01  W-TESTIO1I-RECS         PIC 9(09)  COMP VALUE 0.
+000058         01  W-RECLEN                PIC S9(09) COMP.
+000059         01  W-DISP-NUM-1            PIC Z,ZZ9.
+000060         01  W-DISP-NUM-2            PIC Z9.
+000061
+000062         01  FILLER                  PIC X(01)       VALUE 'N'.
+000063             88  W-EOF                               VALUE 'Y'.
+000064
+000065         01  W-COMPILED-DATE.
+000066             05  W-COMPILED-DATE-YYYY
+000067                                     PIC X(04).
+000068             05  W-COMPILED-DATE-MM  PIC X(02).
+000069             05  W-COMPILED-DATE-DD  PIC X(02).
+000070             05  W-COMPILED-TIME-HH  PIC X(02).
+000071             05  W-COMPILED-TIME-MM  PIC X(02).
+000072             05  W-COMPILED-TIME-SS  PIC X(02).
+000073             05  FILLER              PIC X(07).
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0003
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000069        /
-000070         PROCEDURE DIVISION.
-000071        *===================
-000072
-000073         MAIN.
-000074        *-----
-000075
-000076             PERFORM SUB-1000-START-UP THRU SUB-1000-EXIT
+000074        /
+000075         PROCEDURE DIVISION.
+000076        *===================
 000077
-000078             PERFORM SUB-9100-READ-TESTIO1I THRU SUB-9100-EXIT
-000079
-000080             PERFORM SUB-2000-PROCESS THRU SUB-2000-EXIT
-000081                 UNTIL W-EOF
+000078         MAIN.
+000079        *-----
+000080
+000081             PERFORM SUB-1000-START-UP THRU SUB-1000-EXIT
 000082
-000083             PERFORM SUB-3000-SHUT-DOWN THRU SUB-3000-EXIT
-000084             .
-000085         MAIN-EXIT.
-000086             STOP RUN.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Jan 19 23:21:47 2020  Page 0004
+000083             PERFORM SUB-9100-READ-TESTIO1I THRU SUB-9100-EXIT
+000084
+000085             PERFORM SUB-2000-PROCESS THRU SUB-2000-EXIT
+000086                 UNTIL W-EOF
+000087
+000088             PERFORM SUB-3000-SHUT-DOWN THRU SUB-3000-EXIT
+000089             .
+000090         MAIN-EXIT.
+000091             STOP RUN.
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0004
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000087        /
-000088         SUB-1000-START-UP.
-000089        *------------------
-000090
-000091             MOVE FUNCTION WHEN-COMPILED
-000092                                     TO W-COMPILED-DATE
-000093
-000094             DISPLAY 'TESTIO1 compiled on '
-000095                 W-COMPILED-DATE-YYYY '/'
-000096                 W-COMPILED-DATE-MM   '/'
-000097                 W-COMPILED-DATE-DD   ' at '
-000098                 W-COMPILED-TIME-HH   ':'
-000099                 W-COMPILED-TIME-MM   ':'
-000100                 W-COMPILED-TIME-SS
-000101
-000102             OPEN INPUT TESTIO1I
-000103             .
-000104         SUB-1000-EXIT.
-000105             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Jan 19 23:21:47 2020  Page 0005
+000092        /
+000093         SUB-1000-START-UP.
+000094        *------------------
+000095
+000096             MOVE FUNCTION WHEN-COMPILED
+000097                                     TO W-COMPILED-DATE
+000098
+000099             DISPLAY 'TESTIO1 compiled on '
+000100                 W-COMPILED-DATE-YYYY '/'
+000101                 W-COMPILED-DATE-MM   '/'
+000102                 W-COMPILED-DATE-DD   ' at '
+000103                 W-COMPILED-TIME-HH   ':'
+000104                 W-COMPILED-TIME-MM   ':'
+000105                 W-COMPILED-TIME-SS
+000106
+000107             OPEN INPUT TESTIO1I
+000108             .
+000109         SUB-1000-EXIT.
+000110             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0005
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000106        /
-000107         SUB-2000-PROCESS.
-000108        *-----------------
-000109
-000110             MOVE W-TESTIO1I-RECS    TO W-DISP-NUM
-000111             DISPLAY 'Record '
-000112                     W-DISP-NUM
-000113                     ': '
-000114                     TESTIO1I-REC.
-000115
-000116             PERFORM SUB-9100-READ-TESTIO1I THRU SUB-9100-EXIT
-000117             .
-000118         SUB-2000-EXIT.
-000119             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Jan 19 23:21:47 2020  Page 0006
+000111        /
+000112         SUB-2000-PROCESS.
+000113        *-----------------
+000114
+000115             MOVE W-TESTIO1I-RECS    TO W-DISP-NUM-1
+000116             MOVE W-RECLEN           TO W-DISP-NUM-2
+000117
+000118             DISPLAY 'Record '
+000119                     W-DISP-NUM-1
+000120                     ' ('
+000121                     W-DISP-NUM-2
+000122                     ' bytes): '
+000123                     TESTIO1I-REC
+000124
+000125             PERFORM SUB-9100-READ-TESTIO1I THRU SUB-9100-EXIT
+000126             .
+000127         SUB-2000-EXIT.
+000128             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0006
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000120        /
-000121         SUB-3000-SHUT-DOWN.
-000122        *-------------------
-000123
-000124             CLOSE TESTIO1I
-000125
-000126             DISPLAY 'TESTIO1 Completed'
-000127             MOVE W-TESTIO1I-RECS    TO W-DISP-NUM
-000128             DISPLAY 'TESTIO1I records read: '
-000129                     W-DISP-NUM
-000130             .
-000131         SUB-3000-EXIT.
-000132             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Jan 19 23:21:47 2020  Page 0007
+000129        /
+000130         SUB-3000-SHUT-DOWN.
+000131        *-------------------
+000132
+000133             CLOSE TESTIO1I
+000134
+000135             MOVE W-TESTIO1I-RECS    TO W-DISP-NUM-1
+000136             DISPLAY 'TESTIO1I records read: '
+000137                     W-DISP-NUM-1
+000138             DISPLAY 'TESTIO1 Completed'
+000139             .
+000140         SUB-3000-EXIT.
+000141             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0007
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000133        /
-000134         SUB-9100-READ-TESTIO1I.
-000135        *-----------------------
-000136
-000137             READ TESTIO1I
-000138                 AT END
-000139                     SET  W-EOF      TO TRUE
-000140                 NOT AT END
-000141                     ADD  1          TO W-TESTIO1I-RECS
-000142             END-READ
-000143             .
-000144         SUB-9100-EXIT.
-000145             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Jan 19 23:21:47 2020  Page 0008
+000142        /
+000143         SUB-9100-READ-TESTIO1I.
+000144        *-----------------------
+000145
+000146             READ TESTIO1I
+000147                 AT END
+000148                     SET  W-EOF      TO TRUE
+000149                 NOT AT END
+000150                     ADD  1          TO W-TESTIO1I-RECS
+000151             END-READ
+000152             .
+000153         SUB-9100-EXIT.
+000154             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0008
 
 SIZE  TYPE           LVL  NAME                           PICTURE
 
@@ -182,7 +191,11 @@ SIZE  TYPE           LVL  NAME                           PICTURE
 
 00004 NUMERIC        01   W-TESTIO1I-RECS                9(09) COMP
 
-00010 NUMERIC        01   W-DISP-NUM                     ZZ,ZZZ,ZZ9
+00004 NUMERIC        01   W-RECLEN                       S9(09) COMP
+
+00005 NUMERIC        01   W-DISP-NUM-1                   Z,ZZ9
+
+00002 NUMERIC        01   W-DISP-NUM-2                   Z9
 
 00001 ALPHANUMERIC   01   FILLER                         X(01)
       CONDITIONAL    88   W-EOF

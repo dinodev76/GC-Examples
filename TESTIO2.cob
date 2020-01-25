@@ -1,4 +1,4 @@
-      *========================= WS-TESTIO ============================*
+      *========================== TESTIO2 =============================*
       * Authors: Brian D Pead
       *
       * License: MIT
@@ -179,16 +179,19 @@
       
            CLOSE TESTIO2O
 
-           DISPLAY 'TESTIO2 completed'
            MOVE W-OUTPUT-MIN       TO W-DISP-NUM
            DISPLAY 'Shortest record length:   '
                    W-DISP-NUM
+
            MOVE W-OUTPUT-MAX       TO W-DISP-NUM
            DISPLAY 'Longest  record length:   '
                    W-DISP-NUM
+
            MOVE W-TESTIO2O-RECS    TO W-DISP-NUM
            DISPLAY 'TESTIO2O records written: '
                    W-DISP-NUM
+
+           DISPLAY 'TESTIO2 completed'
            .
        SUB-3000-EXIT.
            EXIT.

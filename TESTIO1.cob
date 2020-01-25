@@ -1,4 +1,4 @@
-      *========================== WS-TESTIO ===========================*
+      *=========================== TESTIO1 ============================*
       * Authors: Brian D Pead
       *
       * License: MIT
@@ -44,7 +44,10 @@
        FILE SECTION.
       *-------------
 
-       FD  TESTIO1I.
+       FD  TESTIO1I
+           RECORD VARYING 1 TO 80  *> Comment out if switching to
+           DEPENDING W-RECLEN      *> ORGANIZATION SEQUENTIAL
+           .
 
        01  TESTIO1I-REC            PIC X(80).
 
@@ -52,7 +55,9 @@
       *------------------------
 
        01  W-TESTIO1I-RECS         PIC 9(09)  COMP VALUE 0.
-       01  W-DISP-NUM              PIC ZZ,ZZZ,ZZ9.
+       01  W-RECLEN                PIC S9(09) COMP.
+       01  W-DISP-NUM-1            PIC Z,ZZ9.
+       01  W-DISP-NUM-2            PIC Z9.
 
        01  FILLER                  PIC X(01)       VALUE 'N'.
            88  W-EOF                               VALUE 'Y'.
@@ -107,11 +112,15 @@
        SUB-2000-PROCESS.
       *-----------------
 
-           MOVE W-TESTIO1I-RECS    TO W-DISP-NUM
+           MOVE W-TESTIO1I-RECS    TO W-DISP-NUM-1
+           MOVE W-RECLEN           TO W-DISP-NUM-2
+
            DISPLAY 'Record '
-                   W-DISP-NUM
-                   ': '
-                   TESTIO1I-REC.
+                   W-DISP-NUM-1
+                   ' ('
+                   W-DISP-NUM-2
+                   ' bytes): '
+                   TESTIO1I-REC
 
            PERFORM SUB-9100-READ-TESTIO1I THRU SUB-9100-EXIT
            .
@@ -123,10 +132,10 @@
       
            CLOSE TESTIO1I
 
-           DISPLAY 'TESTIO1 Completed'
-           MOVE W-TESTIO1I-RECS    TO W-DISP-NUM
+           MOVE W-TESTIO1I-RECS    TO W-DISP-NUM-1
            DISPLAY 'TESTIO1I records read: '
-                   W-DISP-NUM
+                   W-DISP-NUM-1
+           DISPLAY 'TESTIO1 Completed'
            .
        SUB-3000-EXIT.
            EXIT.

@@ -1,8 +1,8 @@
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0001
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0001
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000001        *========================= WS-TESTIO ============================*
+000001        *========================== TESTIO2 =============================*
 000002        * Authors: Brian D Pead
 000003        *
 000004        * License: MIT
@@ -54,7 +54,7 @@ LINE    PG/LN  A...B............................................................
 000050         FILE-CONTROL.
 000051             SELECT TESTIO2O         ASSIGN 'Data\TESTIO2.Output.bin'
 000052                                     ORGANIZATION SEQUENTIAL.
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0002
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0002
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -105,7 +105,7 @@ LINE    PG/LN  A...B............................................................
 000097         01  FILLER REDEFINES W-CHAR-BIN.
 000098             05  FILLER              PIC X.
 000099             05  W-CHAR              PIC X.
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0003
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0003
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -125,7 +125,7 @@ LINE    PG/LN  A...B............................................................
 000113             .
 000114         MAIN-EXIT.
 000115             STOP RUN.
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0004
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0004
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -148,7 +148,7 @@ LINE    PG/LN  A...B............................................................
 000132             .
 000133         SUB-1000-EXIT.
 000134             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0005
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0005
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -180,7 +180,7 @@ LINE    PG/LN  A...B............................................................
 000160             .
 000161         SUB-2000-EXIT.
 000162             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0006
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0006
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -197,7 +197,7 @@ LINE    PG/LN  A...B............................................................
 000173             .
 000174         SUB-2100-EXIT.
 000175             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0007
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0007
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -207,45 +207,48 @@ LINE    PG/LN  A...B............................................................
 000179
 000180             CLOSE TESTIO2O
 000181
-000182             DISPLAY 'TESTIO2 completed'
-000183             MOVE W-OUTPUT-MIN       TO W-DISP-NUM
-000184             DISPLAY 'Shortest record length:   '
-000185                     W-DISP-NUM
+000182             MOVE W-OUTPUT-MIN       TO W-DISP-NUM
+000183             DISPLAY 'Shortest record length:   '
+000184                     W-DISP-NUM
+000185
 000186             MOVE W-OUTPUT-MAX       TO W-DISP-NUM
 000187             DISPLAY 'Longest  record length:   '
 000188                     W-DISP-NUM
-000189             MOVE W-TESTIO2O-RECS    TO W-DISP-NUM
-000190             DISPLAY 'TESTIO2O records written: '
-000191                     W-DISP-NUM
-000192             .
-000193         SUB-3000-EXIT.
-000194             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0008
+000189
+000190             MOVE W-TESTIO2O-RECS    TO W-DISP-NUM
+000191             DISPLAY 'TESTIO2O records written: '
+000192                     W-DISP-NUM
+000193
+000194             DISPLAY 'TESTIO2 completed'
+000195             .
+000196         SUB-3000-EXIT.
+000197             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0008
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000195        /
-000196         SUB-9100-WRITE-TESTIO2O.
-000197        *------------------------
-000198
-000199             WRITE TESTIO2O-REC
-000200
-000201             ADD  1                  TO W-TESTIO2O-RECS
-000202
-000203             DIVIDE W-TESTIO2O-RECS  BY 10000
-000204                                 GIVING W-QUOTIENT
-000205                              REMAINDER W-REMAINDER
-000206
-000207             IF      W-REMAINDER = 0
-000208                 MOVE W-TESTIO2O-RECS
-000209                                     TO W-DISP-NUM
-000210                 DISPLAY '    Records written: '
-000211                         W-DISP-NUM
-000212             END-IF
-000213             .
-000214         SUB-9100-EXIT.
-000215             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Sun Jan 19 23:23:15 2020  Page 0009
+000198        /
+000199         SUB-9100-WRITE-TESTIO2O.
+000200        *------------------------
+000201
+000202             WRITE TESTIO2O-REC
+000203
+000204             ADD  1                  TO W-TESTIO2O-RECS
+000205
+000206             DIVIDE W-TESTIO2O-RECS  BY 10000
+000207                                 GIVING W-QUOTIENT
+000208                              REMAINDER W-REMAINDER
+000209
+000210             IF      W-REMAINDER = 0
+000211                 MOVE W-TESTIO2O-RECS
+000212                                     TO W-DISP-NUM
+000213                 DISPLAY '    Records written: '
+000214                         W-DISP-NUM
+000215             END-IF
+000216             .
+000217         SUB-9100-EXIT.
+000218             EXIT.
+GnuCOBOL 3.0-rc1.0      TESTIO2.cob                                                   Fri Jan 24 23:13:16 2020  Page 0009
 
 SIZE  TYPE           LVL  NAME                           PICTURE
 
