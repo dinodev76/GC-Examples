@@ -3,8 +3,9 @@
       *
       * License: MIT
       *
-      * Description: Test reading the relative file created by program
-      *              BLDFILES.
+      * Description: Reads the relative file created by program BLDFILES
+      *              in the specfied manner, and displays the records
+      *              read.
       *
       * Date        Version  Description
       * ----        -------  -----------
@@ -223,6 +224,9 @@
                    NO ADVANCING
            
                ACCEPT W-READ-METHOD
+
+               MOVE FUNCTION UPPER-CASE(W-READ-METHOD)
+                                   TO W-READ-METHOD
            END-PERFORM
            .
        SUB-9100-EXIT.
@@ -233,7 +237,7 @@
            
            DISPLAY 'Enter relative record number (odd number since we '
                    'left space in file for the even ones) or space to '
-                   ' exit: '
+                   'exit: '
                NO ADVANCING
            
            ACCEPT W-RELATIVE-REC

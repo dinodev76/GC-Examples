@@ -1,4 +1,4 @@
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0001
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0001
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -7,65 +7,66 @@ LINE    PG/LN  A...B............................................................
 000003        *
 000004        * License: MIT
 000005        *
-000006        * Description: Test reading a line sequential file which is used
-000007        *     to populate indexed and relative output files.
-000008        *
-000009        * Date        Version  Description
-000010        * ----        -------  -----------
-000011        * 2020-01-18  0.1      First release
-000012        *================================================================*
-000013
-000014         IDENTIFICATION DIVISION.
-000015        *========================
-000016
-000017         PROGRAM-ID.                 BLDFILES.
-000018
-000019         ENVIRONMENT DIVISION.
-000020        *=====================
-000021
-000022         CONFIGURATION SECTION.
-000023        *----------------------
-000024
-000025         SOURCE-COMPUTER.
-000026             IBM-Z15.
-000027        *    IBM-Z15 DEBUGGING MODE.
-000028
-000029         INPUT-OUTPUT SECTION.
-000030        *---------------------
-000031
-000032         FILE-CONTROL.
-000033             SELECT NAMADDSQ         ASSIGN 'Data\NAMEADDR.Seq.dat'
-000034                                     ORGANIZATION LINE SEQUENTIAL.
-000035
-000036             SELECT NAMADDIX         ASSIGN "Data\NAMEADDR.Idx.dat"
-000037                                     ORGANIZATION INDEXED
-000038                                     ACCESS RANDOM
-000039                                     RECORD KEY NA-TAXID
-000040                                                     IN NAMADDIX-REC
-000041                                     ALTERNATE KEY NA-LAST-NAME
-000042                                                     IN NAMADDIX-REC
-000043                                         WITH DUPLICATES
-000044                                     FILE STATUS W-FILE-STATUS.
-000045
-000046             SELECT NAMADDRL         ASSIGN "Data\NAMEADDR.Rel.dat"
-000047                                     ORGANIZATION RELATIVE
-000048                                     ACCESS RANDOM
-000049                                     RELATIVE KEY W-NAMADDRL-KEY
-000050                                     FILE STATUS W-FILE-STATUS.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0002
+000006        * Description: This programs reads a line sequential file and
+000007        *              copies the contents to new indexed and relative
+000008        *              output files.
+000009        *
+000010        * Date        Version  Description
+000011        * ----        -------  -----------
+000012        * 2020-01-24  0.1      First release
+000013        *================================================================*
+000014
+000015         IDENTIFICATION DIVISION.
+000016        *========================
+000017
+000018         PROGRAM-ID.                 BLDFILES.
+000019
+000020         ENVIRONMENT DIVISION.
+000021        *=====================
+000022
+000023         CONFIGURATION SECTION.
+000024        *----------------------
+000025
+000026         SOURCE-COMPUTER.
+000027             IBM-Z15.
+000028        *    IBM-Z15 DEBUGGING MODE.
+000029
+000030         INPUT-OUTPUT SECTION.
+000031        *---------------------
+000032
+000033         FILE-CONTROL.
+000034             SELECT NAMADDSQ         ASSIGN 'Data\NAMEADDR.Seq.dat'
+000035                                     ORGANIZATION LINE SEQUENTIAL.
+000036
+000037             SELECT NAMADDIX         ASSIGN "Data\NAMEADDR.Idx.dat"
+000038                                     ORGANIZATION INDEXED
+000039                                     ACCESS RANDOM
+000040                                     RECORD KEY NA-TAXID
+000041                                                     IN NAMADDIX-REC
+000042                                     ALTERNATE KEY NA-LAST-NAME
+000043                                                     IN NAMADDIX-REC
+000044                                         WITH DUPLICATES
+000045                                     FILE STATUS W-FILE-STATUS.
+000046
+000047             SELECT NAMADDRL         ASSIGN "Data\NAMEADDR.Rel.dat"
+000048                                     ORGANIZATION RELATIVE
+000049                                     ACCESS RANDOM
+000050                                     RELATIVE KEY W-NAMADDRL-KEY
+000051                                     FILE STATUS W-FILE-STATUS.
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0002
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000051        /
-000052         DATA DIVISION.
-000053        *==============
-000054
-000055         FILE SECTION.
-000056        *-------------
-000057
-000058         FD  NAMADDSQ.
-000059
-000060         01  NAMADDSQ-REC.           COPY NAMEADDR.
+000052        /
+000053         DATA DIVISION.
+000054        *==============
+000055
+000056         FILE SECTION.
+000057        *-------------
+000058
+000059         FD  NAMADDSQ.
+000060
+000061         01  NAMADDSQ-REC.           COPY NAMEADDR.
 000001C       *01  NAMEADDR-REC.
 000002C            05  NA-TAXID            PIC X(12).
 000003C            05  NA-NAME.
@@ -79,10 +80,10 @@ LINE    PG/LN  A...B............................................................
 000011C                10  NA-STATE        PIC X(10).
 000012C                10  NA-ZIP-CODE     PIC X(10).
 warning: line not terminated by a newline
-000061
-000062         FD  NAMADDIX.
-000063
-000064         01  NAMADDIX-REC.           COPY NAMEADDR.
+000062
+000063         FD  NAMADDIX.
+000064
+000065         01  NAMADDIX-REC.           COPY NAMEADDR.
 000001C       *01  NAMEADDR-REC.
 000002C            05  NA-TAXID            PIC X(12).
 000003C            05  NA-NAME.
@@ -96,10 +97,10 @@ warning: line not terminated by a newline
 000011C                10  NA-STATE        PIC X(10).
 000012C                10  NA-ZIP-CODE     PIC X(10).
 warning: line not terminated by a newline
-000065
-000066         FD  NAMADDRL.
-000067
-000068         01  NAMADDRL-REC.           COPY NAMEADDR.
+000066
+000067         FD  NAMADDRL.
+000068
+000069         01  NAMADDRL-REC.           COPY NAMEADDR.
 000001C       *01  NAMEADDR-REC.
 000002C            05  NA-TAXID            PIC X(12).
 000003C            05  NA-NAME.
@@ -108,7 +109,7 @@ warning: line not terminated by a newline
 000006C                10  NA-LAST-NAME    PIC X(35).
 000007C                10  NA-SUFFIX       PIC X(10).
 000008C            05  NA-ADDRESS.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0003
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0003
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -117,14 +118,13 @@ LINE    PG/LN  A...B............................................................
 000011C                10  NA-STATE        PIC X(10).
 000012C                10  NA-ZIP-CODE     PIC X(10).
 warning: line not terminated by a newline
-000069
-000070         WORKING-STORAGE SECTION.
-000071        *------------------------
-000072
-000073         01  W-NAMADDSQ-RECS         PIC 9(09)  COMP VALUE 0.
-000074         01  W-NAMADDIX-RECS         PIC 9(09)  COMP VALUE 0.
-000075         01  W-NAMADDRL-RECS         PIC 9(09)  COMP VALUE 0.
-000076         01  W-RECLEN                PIC S9(09) COMP.
+000070
+000071         WORKING-STORAGE SECTION.
+000072        *------------------------
+000073
+000074         01  W-NAMADDSQ-RECS         PIC 9(09)  COMP VALUE 0.
+000075         01  W-NAMADDIX-RECS         PIC 9(09)  COMP VALUE 0.
+000076         01  W-NAMADDRL-RECS         PIC 9(09)  COMP VALUE 0.
 000077         01  W-RETURN-CODE           PIC S9(04) COMP.
 000078         01  W-NAMADDRL-KEY          PIC 9(09)  COMP.
 000079         01  W-DISP-NUM              PIC ZZ,ZZ9.
@@ -147,7 +147,7 @@ warning: line not terminated by a newline
 000096             05  W-COMPILED-TIME-MM  PIC X(02).
 000097             05  W-COMPILED-TIME-SS  PIC X(02).
 000098             05  FILLER              PIC X(07).
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0004
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0004
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -174,7 +174,7 @@ LINE    PG/LN  A...B............................................................
 000119             .
 000120         MAIN-EXIT.
 000121             STOP RUN.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0005
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0005
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -221,7 +221,7 @@ LINE    PG/LN  A...B............................................................
 000162             .
 000163         SUB-1000-EXIT.
 000164             EXIT.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0006
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0006
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -249,7 +249,7 @@ LINE    PG/LN  A...B............................................................
 000186             .
 000187         SUB-2000-EXIT.
 000188             EXIT.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0007
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0007
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -277,7 +277,7 @@ LINE    PG/LN  A...B............................................................
 000210             .
 000211         SUB-3000-EXIT.
 000212             EXIT.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0008
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0008
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -294,7 +294,7 @@ LINE    PG/LN  A...B............................................................
 000223             .
 000224         SUB-9100-EXIT.
 000225             EXIT.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0009
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0009
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -317,7 +317,7 @@ LINE    PG/LN  A...B............................................................
 000242             .
 000243         SUB-9200-EXIT.
 000244             EXIT.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0010
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0010
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -337,11 +337,14 @@ LINE    PG/LN  A...B............................................................
 000258             END-IF
 000259
 000260             ADD  1                  TO W-NAMADDRL-RECS
-000261             ADD  2                  TO W-NAMADDRL-KEY
-000262             .
-000263         SUB-9300-EXIT.
-000264             EXIT.
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0011
+000261
+000262        **** Add 2 to key to show resulting space left in output file
+000263        **** for missing records:
+000264             ADD  2                  TO W-NAMADDRL-KEY
+000265             .
+000266         SUB-9300-EXIT.
+000267             EXIT.
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0011
 
 SIZE  TYPE           LVL  NAME                           PICTURE
 
@@ -395,12 +398,10 @@ SIZE  TYPE           LVL  NAME                           PICTURE
 
 00004 NUMERIC        01   W-NAMADDRL-RECS                9(09) COMP
 
-00004 NUMERIC        01   W-RECLEN                       S9(09) COMP
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0012
+00002 NUMERIC        01   W-RETURN-CODE                  S9(04) COMP
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0012
 
 SIZE  TYPE           LVL  NAME                           PICTURE
-
-00002 NUMERIC        01   W-RETURN-CODE                  S9(04) COMP
 
 00004 NUMERIC        01   W-NAMADDRL-KEY                 9(09) COMP
 
@@ -424,7 +425,7 @@ SIZE  TYPE           LVL  NAME                           PICTURE
 00007 ALPHANUMERIC   05   FILLER                         X(07)
 
 
-GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Fri Jan 24 23:06:51 2020  Page 0013
+GnuCOBOL 3.0-rc1.0      BLDFILES.cob                                                  Sun Jan 26 11:09:36 2020  Page 0013
 
 Error/Warning summary:
 

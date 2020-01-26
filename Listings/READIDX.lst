@@ -1,4 +1,4 @@
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0001
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0001
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -7,54 +7,55 @@ LINE    PG/LN  A...B............................................................
 000003        *
 000004        * License: MIT
 000005        *
-000006        * Description: Test reading the indexed file created by program
-000007        *              BLDFILES.
-000008        *
-000009        * Date        Version  Description
-000010        * ----        -------  -----------
-000011        * 2020-01-24  0.1      First release
-000012        *================================================================*
-000013
-000014         IDENTIFICATION DIVISION.
-000015        *========================
-000016
-000017         PROGRAM-ID.                 READIDX.
-000018
-000019         ENVIRONMENT DIVISION.
-000020        *=====================
-000021
-000022         CONFIGURATION SECTION.
-000023        *----------------------
-000024
-000025         SOURCE-COMPUTER.
-000026             IBM-Z15.
-000027        *    IBM-Z15 DEBUGGING MODE.
-000028
-000029         INPUT-OUTPUT SECTION.
-000030        *---------------------
-000031
-000032         FILE-CONTROL.
-000033             SELECT NAMADDIX         ASSIGN "Data\NAMEADDR.Idx.dat"
-000034                                     ORGANIZATION INDEXED
-000035                                     ACCESS DYNAMIC
-000036                                     RECORD KEY NA-TAXID
-000037                                     ALTERNATE KEY NA-LAST-NAME
-000038                                         WITH DUPLICATES
-000039                                     FILE STATUS W-FILE-STATUS.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0002
+000006        * Description: Reads the indexed file created by program BLDFILES
+000007        *              in the specfied manner, and displays the records
+000008        *              read.
+000009        *
+000010        * Date        Version  Description
+000011        * ----        -------  -----------
+000012        * 2020-01-24  0.1      First release
+000013        *================================================================*
+000014
+000015         IDENTIFICATION DIVISION.
+000016        *========================
+000017
+000018         PROGRAM-ID.                 READIDX.
+000019
+000020         ENVIRONMENT DIVISION.
+000021        *=====================
+000022
+000023         CONFIGURATION SECTION.
+000024        *----------------------
+000025
+000026         SOURCE-COMPUTER.
+000027             IBM-Z15.
+000028        *    IBM-Z15 DEBUGGING MODE.
+000029
+000030         INPUT-OUTPUT SECTION.
+000031        *---------------------
+000032
+000033         FILE-CONTROL.
+000034             SELECT NAMADDIX         ASSIGN "Data\NAMEADDR.Idx.dat"
+000035                                     ORGANIZATION INDEXED
+000036                                     ACCESS DYNAMIC
+000037                                     RECORD KEY NA-TAXID
+000038                                     ALTERNATE KEY NA-LAST-NAME
+000039                                         WITH DUPLICATES
+000040                                     FILE STATUS W-FILE-STATUS.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0002
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000040        /
-000041         DATA DIVISION.
-000042        *==============
-000043
-000044         FILE SECTION.
-000045        *-------------
-000046
-000047         FD  NAMADDIX.
-000048
-000049         01  NAMADDIX-REC.           COPY NAMEADDR.
+000041        /
+000042         DATA DIVISION.
+000043        *==============
+000044
+000045         FILE SECTION.
+000046        *-------------
+000047
+000048         FD  NAMADDIX.
+000049
+000050         01  NAMADDIX-REC.           COPY NAMEADDR.
 000001C       *01  NAMEADDR-REC.
 000002C            05  NA-TAXID            PIC X(12).
 000003C            05  NA-NAME.
@@ -68,377 +69,383 @@ LINE    PG/LN  A...B............................................................
 000011C                10  NA-STATE        PIC X(10).
 000012C                10  NA-ZIP-CODE     PIC X(10).
 warning: line not terminated by a newline
-000050
-000051         WORKING-STORAGE SECTION.
-000052        *------------------------
-000053
-000054         01  W-NAMADDIX-RECS         PIC 9(09)  COMP VALUE 0.
-000055         01  W-RETURN-CODE           PIC S9(04) COMP.
-000056         01  W-DISP-NUM              PIC ZZ,ZZ9.
-000057
-000058         01  W-ERROR-MSG             PIC X(20)       VALUE
-000059             '**** READIDX error: '.
-000060
-000061         01  W-READ-METHOD           PIC X(01).
-000062             88  W-READ-METHOD-RANDOM                VALUE 'R'.
-000063             88  W-READ-METHOD-SEQUENTIAL            VALUE 'S'.
-000064             88  W-READ-METHOD-EXIT                  VALUE ' '.
-000065             88  W-READ-METHOD-VALID                 VALUE 'R'
-000066                                                           'S'
-000067                                                           ' '.
-000068         01  W-READ-KEY-FIELD              PIC X(01).
-000069             88  W-READ-KEY-FIELD-LAST-NAME          VALUE 'L'.
-000070             88  W-READ-KEY-FIELD-TAXID              VALUE 'T'.
-000071             88  W-READ-KEY-FIELD-EXIT               VALUE ' '.
-000072             88  W-READ-KEY-FIELD-VALID              VALUE 'L'
-000073                                                           'T'
-000074                                                           ' '.
-000075         01  W-KEY-VALUE             PIC X(35).
-000076             88  W-KEY-VALUE-EXIT                    VALUE SPACES.
-000077
-000078         01  FILLER                  PIC X(01).
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0003
+000051
+000052         WORKING-STORAGE SECTION.
+000053        *------------------------
+000054
+000055         01  W-NAMADDIX-RECS         PIC 9(09)  COMP VALUE 0.
+000056         01  W-RETURN-CODE           PIC S9(04) COMP.
+000057         01  W-DISP-NUM              PIC ZZ,ZZ9.
+000058
+000059         01  W-ERROR-MSG             PIC X(20)       VALUE
+000060             '**** READIDX error: '.
+000061
+000062         01  W-READ-METHOD           PIC X(01).
+000063             88  W-READ-METHOD-RANDOM                VALUE 'R'.
+000064             88  W-READ-METHOD-SEQUENTIAL            VALUE 'S'.
+000065             88  W-READ-METHOD-EXIT                  VALUE ' '.
+000066             88  W-READ-METHOD-VALID                 VALUE 'R'
+000067                                                           'S'
+000068                                                           ' '.
+000069         01  W-READ-KEY-FIELD              PIC X(01).
+000070             88  W-READ-KEY-FIELD-LAST-NAME          VALUE 'L'.
+000071             88  W-READ-KEY-FIELD-TAXID              VALUE 'T'.
+000072             88  W-READ-KEY-FIELD-EXIT               VALUE ' '.
+000073             88  W-READ-KEY-FIELD-VALID              VALUE 'L'
+000074                                                           'T'
+000075                                                           ' '.
+000076         01  W-KEY-VALUE             PIC X(35).
+000077             88  W-KEY-VALUE-EXIT                    VALUE SPACES.
+000078
+000079         01  FILLER                  PIC X(01).
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0003
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000079             88  W-INVALID-KEY                       VALUE 'Y'.
-000080             88  W-NOT-INVALID-KEY                   VALUE 'N'.
-000081
-000082         01  FILLER                  PIC X(01).
-000083             88  W-EOF                               VALUE 'Y'.
-000084             88  W-NOT-EOF                           VALUE 'N'.
-000085
-000086         01  W-FILE-STATUS           PIC X(02).
-000087             88  W-FILE-STATUS-GOOD                  VALUE '00'.
-000088
-000089         01  W-COMPILED-DATE.
-000090             05  W-COMPILED-DATE-YYYY
-000091                                     PIC X(04).
-000092             05  W-COMPILED-DATE-MM  PIC X(02).
-000093             05  W-COMPILED-DATE-DD  PIC X(02).
-000094             05  W-COMPILED-TIME-HH  PIC X(02).
-000095             05  W-COMPILED-TIME-MM  PIC X(02).
-000096             05  W-COMPILED-TIME-SS  PIC X(02).
-000097             05  FILLER              PIC X(07).
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0004
+000080             88  W-INVALID-KEY                       VALUE 'Y'.
+000081             88  W-NOT-INVALID-KEY                   VALUE 'N'.
+000082
+000083         01  FILLER                  PIC X(01).
+000084             88  W-EOF                               VALUE 'Y'.
+000085             88  W-NOT-EOF                           VALUE 'N'.
+000086
+000087         01  W-FILE-STATUS           PIC X(02).
+000088             88  W-FILE-STATUS-GOOD                  VALUE '00'.
+000089
+000090         01  W-COMPILED-DATE.
+000091             05  W-COMPILED-DATE-YYYY
+000092                                     PIC X(04).
+000093             05  W-COMPILED-DATE-MM  PIC X(02).
+000094             05  W-COMPILED-DATE-DD  PIC X(02).
+000095             05  W-COMPILED-TIME-HH  PIC X(02).
+000096             05  W-COMPILED-TIME-MM  PIC X(02).
+000097             05  W-COMPILED-TIME-SS  PIC X(02).
+000098             05  FILLER              PIC X(07).
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0004
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000098        /
-000099         PROCEDURE DIVISION.
-000100        *===================
-000101
-000102         MAIN.
-000103        *-----
-000104
-000105             PERFORM SUB-1000-START-UP THRU SUB-1000-EXIT
-000106
-000107             IF      W-RETURN-CODE NOT = 0
-000108                 GO TO MAIN-EXIT
-000109             END-IF
-000110
-000111             PERFORM SUB-9100-GET-READ-METHOD THRU SUB-9100-EXIT
-000112
-000113             PERFORM SUB-2000-PROCESS-READ-METHOD THRU SUB-2000-EXIT
-000114                 UNTIL W-READ-METHOD-EXIT
-000115                 OR    W-RETURN-CODE NOT = 0
-000116
-000117             PERFORM SUB-3000-SHUT-DOWN THRU SUB-3000-EXIT
-000118             .
-000119         MAIN-EXIT.
-000120             STOP RUN.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0005
+000099        /
+000100         PROCEDURE DIVISION.
+000101        *===================
+000102
+000103         MAIN.
+000104        *-----
+000105
+000106             PERFORM SUB-1000-START-UP THRU SUB-1000-EXIT
+000107
+000108             IF      W-RETURN-CODE NOT = 0
+000109                 GO TO MAIN-EXIT
+000110             END-IF
+000111
+000112             PERFORM SUB-9100-GET-READ-METHOD THRU SUB-9100-EXIT
+000113
+000114             PERFORM SUB-2000-PROCESS-READ-METHOD THRU SUB-2000-EXIT
+000115                 UNTIL W-READ-METHOD-EXIT
+000116                 OR    W-RETURN-CODE NOT = 0
+000117
+000118             PERFORM SUB-3000-SHUT-DOWN THRU SUB-3000-EXIT
+000119             .
+000120         MAIN-EXIT.
+000121             STOP RUN.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0005
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000121        /
-000122         SUB-1000-START-UP.
-000123        *------------------
-000124
-000125             MOVE 0                  TO W-RETURN-CODE
-000126             MOVE FUNCTION WHEN-COMPILED
-000127                                     TO W-COMPILED-DATE
-000128
-000129             DISPLAY 'READIDX compiled on '
-000130                 W-COMPILED-DATE-YYYY '/'
-000131                 W-COMPILED-DATE-MM   '/'
-000132                 W-COMPILED-DATE-DD   ' at '
-000133                 W-COMPILED-TIME-HH   ':'
-000134                 W-COMPILED-TIME-MM   ':'
-000135                 W-COMPILED-TIME-SS
-000136
-000137             OPEN INPUT NAMADDIX
-000138
-000139             IF      NOT W-FILE-STATUS-GOOD
-000140                 DISPLAY W-ERROR-MSG
-000141                         'File status '
-000142                         W-FILE-STATUS
-000143                         ' opening NAMADDIX'
-000144                 MOVE 10             TO W-RETURN-CODE
-000145             END-IF
-000146             .
-000147         SUB-1000-EXIT.
-000148             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0006
+000122        /
+000123         SUB-1000-START-UP.
+000124        *------------------
+000125
+000126             MOVE 0                  TO W-RETURN-CODE
+000127             MOVE FUNCTION WHEN-COMPILED
+000128                                     TO W-COMPILED-DATE
+000129
+000130             DISPLAY 'READIDX compiled on '
+000131                 W-COMPILED-DATE-YYYY '/'
+000132                 W-COMPILED-DATE-MM   '/'
+000133                 W-COMPILED-DATE-DD   ' at '
+000134                 W-COMPILED-TIME-HH   ':'
+000135                 W-COMPILED-TIME-MM   ':'
+000136                 W-COMPILED-TIME-SS
+000137
+000138             OPEN INPUT NAMADDIX
+000139
+000140             IF      NOT W-FILE-STATUS-GOOD
+000141                 DISPLAY W-ERROR-MSG
+000142                         'File status '
+000143                         W-FILE-STATUS
+000144                         ' opening NAMADDIX'
+000145                 MOVE 10             TO W-RETURN-CODE
+000146             END-IF
+000147             .
+000148         SUB-1000-EXIT.
+000149             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0006
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000149        /
-000150         SUB-2000-PROCESS-READ-METHOD.
-000151        *-----------------------------
-000152
-000153             PERFORM SUB-9200-GET-READ-KEY-FIELD THRU SUB-9200-EXIT
-000154
-000155             IF      W-READ-METHOD-RANDOM
-000156                 PERFORM SUB-9300-GET-KEY-VALUE THRU SUB-9300-EXIT
-000157
-000158                 PERFORM SUB-2100-READ-RANDOM THRU SUB-2100-EXIT
-000159                     UNTIL W-KEY-VALUE-EXIT
-000160             ELSE
-000161                 PERFORM SUB-2200-READ-SEQUENTIAL THRU SUB-2200-EXIT
-000162                     UNTIL W-READ-KEY-FIELD-EXIT
-000163                     OR    W-RETURN-CODE NOT = 0
-000164             END-IF
-000165
-000166             IF      W-RETURN-CODE NOT = 0
-000167                 GO TO SUB-2000-EXIT
-000168             END-IF
-000169
-000170             PERFORM SUB-9100-GET-READ-METHOD THRU SUB-9100-EXIT
-000171             .
-000172         SUB-2000-EXIT.
-000173             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0007
+000150        /
+000151         SUB-2000-PROCESS-READ-METHOD.
+000152        *-----------------------------
+000153
+000154             PERFORM SUB-9200-GET-READ-KEY-FIELD THRU SUB-9200-EXIT
+000155
+000156             IF      W-READ-METHOD-RANDOM
+000157                 PERFORM SUB-9300-GET-KEY-VALUE THRU SUB-9300-EXIT
+000158
+000159                 PERFORM SUB-2100-READ-RANDOM THRU SUB-2100-EXIT
+000160                     UNTIL W-KEY-VALUE-EXIT
+000161             ELSE
+000162                 PERFORM SUB-2200-READ-SEQUENTIAL THRU SUB-2200-EXIT
+000163                     UNTIL W-READ-KEY-FIELD-EXIT
+000164                     OR    W-RETURN-CODE NOT = 0
+000165             END-IF
+000166
+000167             IF      W-RETURN-CODE NOT = 0
+000168                 GO TO SUB-2000-EXIT
+000169             END-IF
+000170
+000171             PERFORM SUB-9100-GET-READ-METHOD THRU SUB-9100-EXIT
+000172             .
+000173         SUB-2000-EXIT.
+000174             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0007
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000174        /
-000175         SUB-2100-READ-RANDOM.
-000176        *---------------------
-000177
-000178             PERFORM SUB-9400-READ-NAMADDIX-RANDOM THRU SUB-9400-EXIT
-000179
-000180             IF      W-NOT-INVALID-KEY
-000181                 DISPLAY NAMADDIX-REC
-000182             END-IF
-000183
-000184             PERFORM SUB-9300-GET-KEY-VALUE THRU SUB-9300-EXIT
-000185             .
-000186         SUB-2100-EXIT.
-000187             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0008
+000175        /
+000176         SUB-2100-READ-RANDOM.
+000177        *---------------------
+000178
+000179             PERFORM SUB-9400-READ-NAMADDIX-RANDOM THRU SUB-9400-EXIT
+000180
+000181             IF      W-NOT-INVALID-KEY
+000182                 DISPLAY NAMADDIX-REC
+000183             END-IF
+000184
+000185             PERFORM SUB-9300-GET-KEY-VALUE THRU SUB-9300-EXIT
+000186             .
+000187         SUB-2100-EXIT.
+000188             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0008
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000188        /
-000189         SUB-2200-READ-SEQUENTIAL.
-000190        *-------------------------
-000191
-000192             PERFORM SUB-9500-START-NAMADDIX THRU SUB-9500-EXIT
-000193
-000194             IF      W-RETURN-CODE NOT = 0
-000195                 GO TO SUB-2200-EXIT
-000196             END-IF
-000197
-000198             SET  W-NOT-EOF          TO TRUE
-000199
-000200             PERFORM SUB-9600-READ-NAMADDIX-SEQ THRU SUB-9600-EXIT
-000201
-000202             PERFORM UNTIL W-EOF
-000203                     OR    W-RETURN-CODE NOT = 0
-000204                 DISPLAY NAMADDIX-REC
-000205
-000206                 PERFORM SUB-9600-READ-NAMADDIX-SEQ THRU SUB-9600-EXIT
-000207             END-PERFORM
-000208
-000209             IF      W-RETURN-CODE NOT = 0
-000210                 GO TO SUB-2200-EXIT
-000211             END-IF
-000212
-000213             PERFORM SUB-9200-GET-READ-KEY-FIELD THRU SUB-9200-EXIT
-000214             .
-000215         SUB-2200-EXIT.
-000216             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0009
+000189        /
+000190         SUB-2200-READ-SEQUENTIAL.
+000191        *-------------------------
+000192
+000193             PERFORM SUB-9500-START-NAMADDIX THRU SUB-9500-EXIT
+000194
+000195             IF      W-RETURN-CODE NOT = 0
+000196                 GO TO SUB-2200-EXIT
+000197             END-IF
+000198
+000199             SET  W-NOT-EOF          TO TRUE
+000200
+000201             PERFORM SUB-9600-READ-NAMADDIX-SEQ THRU SUB-9600-EXIT
+000202
+000203             PERFORM UNTIL W-EOF
+000204                     OR    W-RETURN-CODE NOT = 0
+000205                 DISPLAY NAMADDIX-REC
+000206
+000207                 PERFORM SUB-9600-READ-NAMADDIX-SEQ THRU SUB-9600-EXIT
+000208             END-PERFORM
+000209
+000210             IF      W-RETURN-CODE NOT = 0
+000211                 GO TO SUB-2200-EXIT
+000212             END-IF
+000213
+000214             PERFORM SUB-9200-GET-READ-KEY-FIELD THRU SUB-9200-EXIT
+000215             .
+000216         SUB-2200-EXIT.
+000217             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0009
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000217        /
-000218         SUB-3000-SHUT-DOWN.
-000219        *-------------------
-000220
-000221             CLOSE NAMADDIX
-000222
-000223             MOVE W-NAMADDIX-RECS    TO W-DISP-NUM
-000224             DISPLAY 'NAMADDIX records read:    '
-000225                     W-DISP-NUM
-000226
-000227             DISPLAY 'READIDX Completed'
-000228             .
-000229         SUB-3000-EXIT.
-000230             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0010
+000218        /
+000219         SUB-3000-SHUT-DOWN.
+000220        *-------------------
+000221
+000222             CLOSE NAMADDIX
+000223
+000224             MOVE W-NAMADDIX-RECS    TO W-DISP-NUM
+000225             DISPLAY 'NAMADDIX records read:    '
+000226                     W-DISP-NUM
+000227
+000228             DISPLAY 'READIDX Completed'
+000229             .
+000230         SUB-3000-EXIT.
+000231             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0010
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000231        /
-000232         SUB-9100-GET-READ-METHOD.
-000233        *-------------------------
-000234
-000235             MOVE 'X'                TO W-READ-METHOD
-000236
-000237             PERFORM UNTIL W-READ-METHOD-VALID
-000238                 DISPLAY 'Enter R for random reads, S for sequential, '
-000239                         'space to exit: '
-000240                     NO ADVANCING
-000241
-000242                 ACCEPT W-READ-METHOD
-000243             END-PERFORM
-000244             .
-000245         SUB-9100-EXIT.
-000246             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0011
+000232        /
+000233         SUB-9100-GET-READ-METHOD.
+000234        *-------------------------
+000235
+000236             MOVE 'X'                TO W-READ-METHOD
+000237
+000238             PERFORM UNTIL W-READ-METHOD-VALID
+000239                 DISPLAY 'Enter R for random reads, S for sequential, '
+000240                         'space to exit: '
+000241                     NO ADVANCING
+000242
+000243                 ACCEPT W-READ-METHOD
+000244
+000245                 MOVE FUNCTION UPPER-CASE(W-READ-METHOD)
+000246                                     TO W-READ-METHOD
+000247             END-PERFORM
+000248             .
+000249         SUB-9100-EXIT.
+000250             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0011
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000247        /
-000248         SUB-9200-GET-READ-KEY-FIELD.
-000249        *----------------------------
-000250
-000251             MOVE 'X'                TO W-READ-KEY-FIELD
-000252
-000253             PERFORM UNTIL W-READ-KEY-FIELD-VALID
-000254                 DISPLAY 'Enter L for last name key, T for taxid, '
-000255                         'space to exit: '
-000256                     NO ADVANCING
-000257
-000258                 ACCEPT W-READ-KEY-FIELD
-000259             END-PERFORM
-000260             .
-000261         SUB-9200-EXIT.
-000262             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0012
+000251        /
+000252         SUB-9200-GET-READ-KEY-FIELD.
+000253        *----------------------------
+000254
+000255             MOVE 'X'                TO W-READ-KEY-FIELD
+000256
+000257             PERFORM UNTIL W-READ-KEY-FIELD-VALID
+000258                 DISPLAY 'Enter L for last name key, T for taxid, '
+000259                         'space to exit: '
+000260                     NO ADVANCING
+000261
+000262                 ACCEPT W-READ-KEY-FIELD
+000263
+000264                 MOVE FUNCTION UPPER-CASE(W-READ-KEY-FIELD)
+000265                                     TO W-READ-KEY-FIELD
+000266             END-PERFORM
+000267             .
+000268         SUB-9200-EXIT.
+000269             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0012
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000263        /
-000264         SUB-9300-GET-KEY-VALUE.
-000265        *-----------------------
-000266
-000267             DISPLAY 'Enter key value or space to exit: '
-000268                 NO ADVANCING
-000269
-000270             ACCEPT W-KEY-VALUE
-000271             .
-000272         SUB-9300-EXIT.
-000273             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0013
+000270        /
+000271         SUB-9300-GET-KEY-VALUE.
+000272        *-----------------------
+000273
+000274             DISPLAY 'Enter key value or space to exit: '
+000275                 NO ADVANCING
+000276
+000277             ACCEPT W-KEY-VALUE
+000278             .
+000279         SUB-9300-EXIT.
+000280             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0013
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000274        /
-000275         SUB-9400-READ-NAMADDIX-RANDOM.
-000276        *------------------------------
-000277
-000278             IF      W-READ-KEY-FIELD-LAST-NAME
-000279                 MOVE W-KEY-VALUE    TO NA-LAST-NAME
-000280
-000281                 READ NAMADDIX
-000282                     KEY NA-LAST-NAME
-000283                     INVALID KEY
-000284                         SET  W-INVALID-KEY
-000285                                     TO TRUE
-000286                         DISPLAY 'Key not on file: '
-000287                                 NA-LAST-NAME
-000288                         GO TO SUB-9400-EXIT
-000289                 END-READ
-000290             ELSE
-000291                 MOVE W-KEY-VALUE    TO NA-TAXID
-000292
-000293                 READ NAMADDIX
-000294                     KEY NA-TAXID
-000295                     INVALID KEY
-000296                         SET  W-INVALID-KEY
-000297                                     TO TRUE
-000298                         DISPLAY 'Key not on file: '
-000299                                 NA-TAXID
-000300                         GO TO SUB-9400-EXIT
-000301                 END-READ
-000302             END-IF
-000303
-000304             IF      W-FILE-STATUS-GOOD
-000305                 SET  W-NOT-INVALID-KEY
-000306                                     TO TRUE
-000307                 ADD  1              TO W-NAMADDIX-RECS
-000308             ELSE
-000309                 DISPLAY W-ERROR-MSG
-000310                         'File status '
-000311                         W-FILE-STATUS
-000312                         ' reading NAMADDIX key'
-000313                 MOVE 20             TO W-RETURN-CODE
-000314             END-IF
-000315             .
-000316         SUB-9400-EXIT.
-000317             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0014
+000281        /
+000282         SUB-9400-READ-NAMADDIX-RANDOM.
+000283        *------------------------------
+000284
+000285             IF      W-READ-KEY-FIELD-LAST-NAME
+000286                 MOVE W-KEY-VALUE    TO NA-LAST-NAME
+000287
+000288                 READ NAMADDIX
+000289                     KEY NA-LAST-NAME
+000290                     INVALID KEY
+000291                         SET  W-INVALID-KEY
+000292                                     TO TRUE
+000293                         DISPLAY 'Key not on file: '
+000294                                 NA-LAST-NAME
+000295                         GO TO SUB-9400-EXIT
+000296                 END-READ
+000297             ELSE
+000298                 MOVE W-KEY-VALUE    TO NA-TAXID
+000299
+000300                 READ NAMADDIX
+000301                     KEY NA-TAXID
+000302                     INVALID KEY
+000303                         SET  W-INVALID-KEY
+000304                                     TO TRUE
+000305                         DISPLAY 'Key not on file: '
+000306                                 NA-TAXID
+000307                         GO TO SUB-9400-EXIT
+000308                 END-READ
+000309             END-IF
+000310
+000311             IF      W-FILE-STATUS-GOOD
+000312                 SET  W-NOT-INVALID-KEY
+000313                                     TO TRUE
+000314                 ADD  1              TO W-NAMADDIX-RECS
+000315             ELSE
+000316                 DISPLAY W-ERROR-MSG
+000317                         'File status '
+000318                         W-FILE-STATUS
+000319                         ' reading NAMADDIX key'
+000320                 MOVE 20             TO W-RETURN-CODE
+000321             END-IF
+000322             .
+000323         SUB-9400-EXIT.
+000324             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0014
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000318        /
-000319         SUB-9500-START-NAMADDIX.
-000320        *------------------------
-000321
-000322             IF      W-READ-KEY-FIELD-LAST-NAME
-000323                 MOVE LOW-VALUES     TO NA-LAST-NAME
-000324
-000325                 START NAMADDIX
-000326                     KEY >= NA-LAST-NAME
-000327                 END-START
-000328             ELSE
-000329                 MOVE LOW-VALUES     TO NA-TAXID
-000330
-000331                 START NAMADDIX
-000332                     KEY >= NA-TAXID
-000333                 END-START
-000334             END-IF
-000335
-000336             IF      NOT W-FILE-STATUS-GOOD
-000337                 DISPLAY W-ERROR-MSG
-000338                         'File status '
-000339                         W-FILE-STATUS
-000340                         ' starting NAMADDIX'
-000341                 MOVE 40             TO W-RETURN-CODE
-000342             END-IF
-000343             .
-000344         SUB-9500-EXIT.
-000345             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0015
+000325        /
+000326         SUB-9500-START-NAMADDIX.
+000327        *------------------------
+000328
+000329             IF      W-READ-KEY-FIELD-LAST-NAME
+000330                 MOVE LOW-VALUES     TO NA-LAST-NAME
+000331
+000332                 START NAMADDIX
+000333                     KEY >= NA-LAST-NAME
+000334                 END-START
+000335             ELSE
+000336                 MOVE LOW-VALUES     TO NA-TAXID
+000337
+000338                 START NAMADDIX
+000339                     KEY >= NA-TAXID
+000340                 END-START
+000341             END-IF
+000342
+000343             IF      NOT W-FILE-STATUS-GOOD
+000344                 DISPLAY W-ERROR-MSG
+000345                         'File status '
+000346                         W-FILE-STATUS
+000347                         ' starting NAMADDIX'
+000348                 MOVE 40             TO W-RETURN-CODE
+000349             END-IF
+000350             .
+000351         SUB-9500-EXIT.
+000352             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0015
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000346        /
-000347         SUB-9600-READ-NAMADDIX-SEQ.
-000348        *---------------------------
-000349
-000350             READ NAMADDIX NEXT
-000351                 AT END
-000352                     SET  W-EOF      TO TRUE
-000353                     GO TO SUB-9600-EXIT
-000354             END-READ
-000355
-000356             IF      W-FILE-STATUS-GOOD
-000357                 ADD  1              TO W-NAMADDIX-RECS
-000358             ELSE
-000359                 DISPLAY W-ERROR-MSG
-000360                         'File status '
-000361                         W-FILE-STATUS
-000362                         ' reading NAMADDIX next record'
-000363                 MOVE 50             TO W-RETURN-CODE
-000364             END-IF
-000365             .
-000366         SUB-9600-EXIT.
-000367             EXIT.
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0016
+000353        /
+000354         SUB-9600-READ-NAMADDIX-SEQ.
+000355        *---------------------------
+000356
+000357             READ NAMADDIX NEXT
+000358                 AT END
+000359                     SET  W-EOF      TO TRUE
+000360                     GO TO SUB-9600-EXIT
+000361             END-READ
+000362
+000363             IF      W-FILE-STATUS-GOOD
+000364                 ADD  1              TO W-NAMADDIX-RECS
+000365             ELSE
+000366                 DISPLAY W-ERROR-MSG
+000367                         'File status '
+000368                         W-FILE-STATUS
+000369                         ' reading NAMADDIX next record'
+000370                 MOVE 50             TO W-RETURN-CODE
+000371             END-IF
+000372             .
+000373         SUB-9600-EXIT.
+000374             EXIT.
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0016
 
 SIZE  TYPE           LVL  NAME                           PICTURE
 
@@ -493,7 +500,7 @@ SIZE  TYPE           LVL  NAME                           PICTURE
       CONDITIONAL    88   W-FILE-STATUS-GOOD
 
 00021 GROUP          01   W-COMPILED-DATE
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0017
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0017
 
 SIZE  TYPE           LVL  NAME                           PICTURE
 
@@ -506,7 +513,7 @@ SIZE  TYPE           LVL  NAME                           PICTURE
 00007 ALPHANUMERIC   05   FILLER                         X(07)
 
 
-GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sat Jan 25 08:22:45 2020  Page 0018
+GnuCOBOL 3.0-rc1.0      READIDX.cob                                                   Sun Jan 26 11:14:58 2020  Page 0018
 
 Error/Warning summary:
 

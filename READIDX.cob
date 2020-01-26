@@ -3,8 +3,9 @@
       *
       * License: MIT
       *
-      * Description: Test reading the indexed file created by program
-      *              BLDFILES.
+      * Description: Reads the indexed file created by program BLDFILES
+      *              in the specfied manner, and displays the records
+      *              read.
       *
       * Date        Version  Description
       * ----        -------  -----------
@@ -240,6 +241,9 @@
                    NO ADVANCING
            
                ACCEPT W-READ-METHOD
+
+               MOVE FUNCTION UPPER-CASE(W-READ-METHOD)
+                                   TO W-READ-METHOD
            END-PERFORM
            .
        SUB-9100-EXIT.
@@ -256,6 +260,9 @@
                    NO ADVANCING
            
                ACCEPT W-READ-KEY-FIELD
+
+               MOVE FUNCTION UPPER-CASE(W-READ-KEY-FIELD)
+                                   TO W-READ-KEY-FIELD
            END-PERFORM
            .
        SUB-9200-EXIT.

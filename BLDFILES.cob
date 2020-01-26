@@ -3,8 +3,9 @@
       *
       * License: MIT
       *
-      * Description: Test reading a line sequential file which is used
-      *              to populate indexed and relative output files.
+      * Description: This programs reads a line sequential file and 
+      *              copies the contents to new indexed and relative
+      *              output files.
       *
       * Date        Version  Description
       * ----        -------  -----------

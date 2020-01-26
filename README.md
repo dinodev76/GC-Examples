@@ -35,17 +35,23 @@ These instructions will get you a copy of the project up and running on your loc
 
 <pre>
     GC-Examples  
-        .vscode  
+        .vscode 
+        Bin 
         CopyBooks  
         Data
-        Listings  
+        Listings
+        Utilities  
 </pre>
 
 5. Run VS Code and select File/Open Folder..., and open the above GC-Examples folder to get started. It is important to do the Open Folder instead of opening individual files!
 
 ## Running the example programs
 
-1. **RDWADJST**: This program adjusts the Record Descriptor Word (RDW) on variable length record files, to support uploading and downloading such files to/from an IBM mainframe. GnuCOBOL expects RDWs to have a record length excluding the RDW while the mainframe RDWs have a record length including the RDW, i.e. the GnuCOBOL RDW record length is 4 less than the mainframe.
+1. **BLDFILES**: This programs reads a line sequential file and copies the contents to new indexed and relative output files.
+
+    To compile and run it from VS Code, click on BLDFILES.cob and select Terminal/Run Task.../Compile and Run Selected Program.
+
+2. **RDWADJST**: This program adjusts the Record Descriptor Word (RDW) on variable length record files, to support uploading and downloading such files to/from an IBM mainframe. GnuCOBOL expects RDWs to have a record length excluding the RDW while the mainframe RDWs have a record length including the RDW, i.e. the GnuCOBOL RDW record length is 4 less than the mainframe.
 
     To compile and run it from VS Code, select Terminal/Run Task.../Compile and Run RDWADJST.
 
@@ -63,17 +69,27 @@ These instructions will get you a copy of the project up and running on your loc
 
     HxD is a really useful tool for viewing files in hex (e.g. to examine RDWs), and it supports many character sets, including EBCDIC and ASCII. See https://mh-nexus.de/en/hxd/. 
 
-2. **TESTIO1**: Test reading a line sequential file. This shows that GnuCOBOL treats CR/LF (on Windows) as end of record markers, whereas those are ignored on regular sequential files. Try removing the LINE from "ORGANIZATION LINE SEQUENTIAL" to see the difference with the provided input file.
+3. **READIDX**: Reads the indexed file created by program BLDFILES in the specfied manner, and displays the records read.
+
+    To compile and run it from VS Code, click on READIDX.cob and select Terminal/Run Task.../Compile and Run Selected Program.
+
+4. **READREL**: Reads the relative file created by program BLDFILES in the specfied manner, and displays the records read.
+
+    To compile and run it from VS Code, click on READIDX.cob and select Terminal/Run Task.../Compile and Run Selected Program.
+
+5. **TESTIO1**: Test reading a line sequential file. This shows that GnuCOBOL treats CR/LF (on Windows) as end of record markers, whereas those are ignored on regular sequential files. Try removing the LINE from "ORGANIZATION LINE SEQUENTIAL" to see the difference with the provided input file.
 
     To compile and run it from VS Code, click on TESTIO1.cob and select Terminal/Run Task.../Compile and Run Selected Program.
 
-3. **TESTIO2**: Test writing a variable length record sequential file. This shows that GnuCOBOL creates RDWs similar to the IBM mainframe (when COB_VARSEQ_FORMAT=0, the default), but the RDW record length does not include itself, i.e. it is 4 less than the mainframe.
+6. **TESTIO2**: Test writing a variable length record sequential file. This shows that GnuCOBOL creates RDWs similar to the IBM mainframe (when COB_VARSEQ_FORMAT=0, the default), but the RDW record length does not include itself, i.e. it is 4 less than the mainframe.
 
     To compile and run it from VS Code, click on TESTIO2.cob and select Terminal/Run Task.../Compile and Run Selected Program.
 
-4. **TRNSLATT**: Test converting a file from ASCII to EBCDIC, using subroutine **TRNSLAT**.
+7. **TRNSLATT**: Test converting a file from ASCII to EBCDIC, using subroutine **TRNSLAT**.
 
     To compile and run it from VS Code, select Terminal/Run Task.../Compile and Run TRNSLATT.
+
+    The utilities folder contains C# program CobolTranslateGen that generates translation table copybooks to be used by a program like TRNSLATT. The programs support single byte character sets only.
 
 ## Authors
 
