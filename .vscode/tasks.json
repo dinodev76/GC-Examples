@@ -4,27 +4,28 @@
     {
         "env": 
         {
-            "COB_CONFIG_DIR":   "C:\\GnuCOBOL\\share\\gnucobol\\config",
-            "COB_COPY_DIR":     "C:\\GnuCOBOL\\share\\gnucobol\\copy",
+            "COB_CONFIG_DIR":    "C:\\GnuCOBOL\\share\\gnucobol\\config",
+            "COB_COPY_DIR":      "C:\\GnuCOBOL\\share\\gnucobol\\copy",
+            "COB_LIBRARY_PATH":  "${workspaceFolder}\\Bin",
             "COB_VARSEQ_FORMAT": "0",
-            "MINGW_ROOT_PATH":  "C:\\GnuCOBOL\\",
-            "PATH":             "C:\\GnuCOBOL\\bin"       
+            "MINGW_ROOT_PATH":   "C:\\GnuCOBOL\\",
+            "PATH":              "C:\\GnuCOBOL\\bin"       
         }
     },
     "tasks":
     [
         {
-            "label": "Compile Selected Program",
+            "label": "Compile Selected Subroutine",
             "type": "process",
             "command": "C:\\GnuCOBOL\\bin\\cobc.exe",
             "args":
             [
-                "-x",
+                "-m",
                 "-o",
-                "${workspaceFolder}\\Bin\\${fileBasenameNoExtension}.exe",
+                "${workspaceFolder}\\Bin\\${fileBasenameNoExtension}.dll",
                 "${fileBasenameNoExtension}.cob",
                 "-I${workspaceFolder}\\CopyBooks",
-                "-std=cobol2002",
+                "-std=ibm",
                 "-T",
                 "${workspaceFolder}\\Listings\\${fileBasenameNoExtension}.lst",
                 "--tsymbols",
@@ -39,13 +40,44 @@
             }
         },
         {
-            "label": "Compile and Run Selected Program",
+            "label": "Compile Selected Main Program",
+            "type": "process",
+            "command": "C:\\GnuCOBOL\\bin\\cobc.exe",
+            "args":
+            [
+                "-x",
+                "-o",
+                "${workspaceFolder}\\Bin\\${fileBasenameNoExtension}.exe",
+                "${fileBasenameNoExtension}.cob",
+                "-I${workspaceFolder}\\CopyBooks",
+                "-std=ibm",
+                "-T",
+                "${workspaceFolder}\\Listings\\${fileBasenameNoExtension}.lst",
+                "--tsymbols",
+                "-v",
+                "-debug"
+            ],
+            "problemMatcher": "$gnucobol-cobc",
+            "group":
+            {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Compile and Run Selected Main Program",
             "type": "process",
             "command": "${workspaceFolder}\\Bin\\${fileBasenameNoExtension}.exe",
             "dependsOn":
             [
-                "Compile Selected Program"
+                "Compile Selected Main Program"
             ],
+            "problemMatcher": "$gnucobol-cobc"
+        },
+        {
+            "label": "Run Selected Main Program",
+            "type": "process",
+            "command": "${workspaceFolder}\\Bin\\${fileBasenameNoExtension}.exe",
             "problemMatcher": "$gnucobol-cobc"
         },
         {
@@ -107,54 +139,6 @@
             [
                 "${workspaceFolder}\\Data\\TESTIO2.Output.bin",
                 "MF2GC"
-            ],
-            "problemMatcher": "$gnucobol-cobc"
-        },
-        {
-            "label": "Compile TRNSLATT",
-            "type": "process",
-            "command": "C:\\GnuCOBOL\\bin\\cobc.exe",
-            "args":
-            [
-                "-x",
-                "-o",
-                "${workspaceFolder}\\Bin\\TRNSLATT.exe",
-                "TRNSLATT.cob",
-                "TRNSLAT.cob",
-                "-I${workspaceFolder}\\CopyBooks",
-                "-std=cobol2002",
-                "-T",
-                "${workspaceFolder}\\Listings\\TRNSLATT.lst",
-                "--tsymbols",
-                "-v",
-                "-debug"
-            ],
-            "problemMatcher": "$gnucobol-cobc",
-            "group":
-            {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Compile and Run TRNSLATT",
-            "type": "process",
-            "command": "${workspaceFolder}\\Bin\\TRNSLATT.exe",
-            "args": 
-            [
-            ],
-            "dependsOn":
-            [
-                "Compile TRNSLATT"
-            ],
-            "problemMatcher": "$gnucobol-cobc"
-        },
-        {
-            "label": "Run TRNSLATT",
-            "type": "process",
-            "command": "${workspaceFolder}\\Bin\\TRNSLATT.exe",
-            "args": 
-            [
             ],
             "problemMatcher": "$gnucobol-cobc"
         },

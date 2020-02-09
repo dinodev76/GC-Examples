@@ -1,3 +1,13 @@
+      *========================= NAMEADDR.cpy =========================*
+      * Authors: Brian D Pead
+      *
+      * License: MIT
+      *
+      * Date        Version  Description
+      * ----        -------  -----------
+      * 2020-02-08  1.0      First release
+      *================================================================*
+
       *01  NAMEADDR-REC.
            05  NA-TAXID            PIC X(12).
            05  NA-NAME.

@@ -1,4 +1,4 @@
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0001
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0001
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -35,468 +35,467 @@ LINE    PG/LN  A...B............................................................
 000031        *
 000032        * Date        Version  Description
 000033        * ----        -------  -----------
-000034        * 2020-01-18  0.1      First release
-000035        *
-000036        *================================================================*
-000037
-000038         IDENTIFICATION DIVISION.
-000039        *========================
-000040
-000041         PROGRAM-ID.                 RDWADJST.
-000042
-000043         ENVIRONMENT DIVISION.
-000044        *=====================
-000045
-000046         CONFIGURATION SECTION.
-000047        *----------------------
-000048
-000049         SOURCE-COMPUTER.
-000050             IBM-Z15.
-000051        *    IBM-Z15 DEBUGGING MODE.
-000052
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0002
+000034        * 2020-02-08  1.0      First release
+000035        *================================================================*
+000036
+000037         IDENTIFICATION DIVISION.
+000038        *========================
+000039
+000040         PROGRAM-ID.                 RDWADJST.
+000041
+000042         ENVIRONMENT DIVISION.
+000043        *=====================
+000044
+000045         CONFIGURATION SECTION.
+000046        *----------------------
+000047
+000048         SOURCE-COMPUTER.
+000049             IBM-Z15.
+000050        *    IBM-Z15 DEBUGGING MODE.
+000051
+000052         INPUT-OUTPUT SECTION.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0002
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000053         INPUT-OUTPUT SECTION.
-000054        *---------------------
-000055
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0003
+000053        *---------------------
+000054
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0003
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000056        /
-000057         DATA DIVISION.
-000058        *==============
-000059
-000060         FILE SECTION.
-000061        *-------------
-000062
-000063         WORKING-STORAGE SECTION.
-000064        *------------------------
-000065
-000066         01  W-RDWFILE-RECS          PIC 9(09)  COMP.
-000067         01  W-RDW-LEN-MIN           PIC S9(09) COMP VALUE 99999999.
-000068         01  W-RDW-LEN-MAX           PIC S9(09) COMP VALUE 0.
-000069         01  W-QUOTIENT              PIC 9(09)  COMP.
-000070         01  W-REMAINDER             PIC 9(09)  COMP.
-000071         01  W-DISP-NUM              PIC ZZ,ZZZ,ZZ9.
-000072         01  W-DATA-LEN              PIC X(04)  COMP-X.
-000073         01  W-FILE-HANDLE           PIC X(04)  COMP-X.
-000074         01  W-OFFSET                PIC X(08)  COMP-X.
-000075         01  W-NBYTES                PIC X(04)  COMP-X
-000076                                                     VALUE 4.
-000077         01  W-FLAG                  PIC X(01)  COMP-X
-000078                                                     VALUE 0.
-000079         01  W-FILE-PATH             PIC X(256).
-000080
-000081         01  W-FUNCTION              PIC X(05).
-000082             88  W-FUNCTION-DECR-RDW                 VALUE 'MF2GC'.
-000083             88  W-FUNCTION-INCR-RDW                 VALUE 'GC2MF'.
-000084             88  W-FUNCTION-OK                       VALUE 'MF2GC'
-000085                                                           'GC2MF'.
-000086
-000087         01  FILLER                  PIC X(01).
-000088             88  W-EOF                               VALUE 'Y'.
-000089             88  W-NOT-EOF                           VALUE 'N'.
-000090
-000091         01  FILLER                  PIC X(01).
-000092             88  W-VALIDATE                          VALUE 'V'.
-000093             88  W-UPDATE                            VALUE 'U'.
-000094
-000095         01  W-ERROR-MSG             PIC X(21)       VALUE
-000096             '**** RDWADJST error: '.
-000097
-000098         01  W-COMPILED-DATE.
-000099             05  W-COMPILED-DATE-YYYY
-000100                                     PIC X(04).
-000101             05  W-COMPILED-DATE-MM  PIC X(02).
-000102             05  W-COMPILED-DATE-DD  PIC X(02).
-000103             05  W-COMPILED-TIME-HH  PIC X(02).
-000104             05  W-COMPILED-TIME-MM  PIC X(02).
-000105             05  W-COMPILED-TIME-SS  PIC X(02).
-000106             05  FILLER              PIC X(07).
-000107
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0004
+000055        /
+000056         DATA DIVISION.
+000057        *==============
+000058
+000059         FILE SECTION.
+000060        *-------------
+000061
+000062         WORKING-STORAGE SECTION.
+000063        *------------------------
+000064
+000065         01  W-RDWFILE-RECS          PIC 9(09)  COMP.
+000066         01  W-RDW-LEN-MIN           PIC S9(09) COMP VALUE 99999999.
+000067         01  W-RDW-LEN-MAX           PIC S9(09) COMP VALUE 0.
+000068         01  W-QUOTIENT              PIC 9(09)  COMP.
+000069         01  W-REMAINDER             PIC 9(09)  COMP.
+000070         01  W-DISP-NUM              PIC ZZ,ZZZ,ZZ9.
+000071         01  W-DATA-LEN              PIC X(04)  COMP-X.
+000072         01  W-FILE-HANDLE           PIC X(04)  COMP-X.
+000073         01  W-OFFSET                PIC X(08)  COMP-X.
+000074         01  W-NBYTES                PIC X(04)  COMP-X
+000075                                                     VALUE 4.
+000076         01  W-FLAG                  PIC X(01)  COMP-X
+000077                                                     VALUE 0.
+000078         01  W-FILE-PATH             PIC X(256).
+000079
+000080         01  W-FUNCTION              PIC X(05).
+000081             88  W-FUNCTION-DECR-RDW                 VALUE 'MF2GC'.
+000082             88  W-FUNCTION-INCR-RDW                 VALUE 'GC2MF'.
+000083             88  W-FUNCTION-OK                       VALUE 'MF2GC'
+000084                                                           'GC2MF'.
+000085
+000086         01  FILLER                  PIC X(01).
+000087             88  W-EOF                               VALUE 'Y'.
+000088             88  W-NOT-EOF                           VALUE 'N'.
+000089
+000090         01  FILLER                  PIC X(01).
+000091             88  W-VALIDATE                          VALUE 'V'.
+000092             88  W-UPDATE                            VALUE 'U'.
+000093
+000094         01  W-ERROR-MSG             PIC X(21)       VALUE
+000095             '**** RDWADJST error: '.
+000096
+000097         01  W-COMPILED-DATE.
+000098             05  W-COMPILED-DATE-YYYY
+000099                                     PIC X(04).
+000100             05  W-COMPILED-DATE-MM  PIC X(02).
+000101             05  W-COMPILED-DATE-DD  PIC X(02).
+000102             05  W-COMPILED-TIME-HH  PIC X(02).
+000103             05  W-COMPILED-TIME-MM  PIC X(02).
+000104             05  W-COMPILED-TIME-SS  PIC X(02).
+000105             05  FILLER              PIC X(07).
+000106
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0004
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000108         01  W-RDW.
-000109             05  W-RDW-LEN           PIC X(02)  COMP-X.
-000110             05  W-RDW-LV            PIC X(02).
-000111         01  FILLER REDEFINES W-RDW.
-000112             05  W-RDW-CHAR          PIC X(01)  COMP-X
-000113                                                     OCCURS 4
-000114                                                     INDEXED W-R-DX.
-000115
-000116         01  W-HEX-TABLE.
-000117             05  FILLER              PIC X(16)       VALUE
-000118                 '0123456789ABCDEF'.
-000119         01  FILLER REDEFINES W-HEX-TABLE.
-000120             05  W-HEX-CHAR          PIC X(01)       OCCURS 16.
-000121
-000122         01  W-HEX-STRING.
-000123             05  FILLER                              OCCURS 4
-000124                                                     INDEXED W-H-DX.
-000125                 10  W-HEX-CHAR-1    PIC X(01).
-000126                 10  W-HEX-CHAR-2    PIC X(01).
-000127                 10  W-HEX-DASH      PIC X(01).
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0005
+000107         01  W-RDW.
+000108             05  W-RDW-LEN           PIC X(02)  COMP-X.
+000109             05  W-RDW-LV            PIC X(02).
+000110         01  FILLER REDEFINES W-RDW.
+000111             05  W-RDW-CHAR          PIC X(01)  COMP-X
+000112                                                     OCCURS 4
+000113                                                     INDEXED W-R-DX.
+000114
+000115         01  W-HEX-TABLE.
+000116             05  FILLER              PIC X(16)       VALUE
+000117                 '0123456789ABCDEF'.
+000118         01  FILLER REDEFINES W-HEX-TABLE.
+000119             05  W-HEX-CHAR          PIC X(01)       OCCURS 16.
+000120
+000121         01  W-HEX-STRING.
+000122             05  FILLER                              OCCURS 4
+000123                                                     INDEXED W-H-DX.
+000124                 10  W-HEX-CHAR-1    PIC X(01).
+000125                 10  W-HEX-CHAR-2    PIC X(01).
+000126                 10  W-HEX-DASH      PIC X(01).
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0005
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000128        /
-000129         PROCEDURE DIVISION.
-000130        *===================
-000131
-000132         MAIN.
-000133        *-----
-000134
-000135             PERFORM SUB-1000-START-UP THRU SUB-1000-EXIT
-000136
-000137             IF      RETURN-CODE = 0
-000138                 SET  W-VALIDATE     TO TRUE
-000139
-000140                 PERFORM SUB-2000-PROCESS-RECS THRU SUB-2000-EXIT
-000141             END-IF
-000142
-000143             IF      RETURN-CODE = 0
-000144                 SET  W-UPDATE       TO TRUE
-000145
-000146                 PERFORM SUB-2000-PROCESS-RECS THRU SUB-2000-EXIT
-000147             END-IF
-000148
-000149             IF      RETURN-CODE = 0
-000150                 PERFORM SUB-3000-SHUT-DOWN THRU SUB-3000-EXIT
-000151             END-IF
-000152             .
-000153         MAIN-EXIT.
-000154             STOP RUN.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0006
+000127        /
+000128         PROCEDURE DIVISION.
+000129        *===================
+000130
+000131         MAIN.
+000132        *-----
+000133
+000134             PERFORM SUB-1000-START-UP THRU SUB-1000-EXIT
+000135
+000136             IF      RETURN-CODE = 0
+000137                 SET  W-VALIDATE     TO TRUE
+000138
+000139                 PERFORM SUB-2000-PROCESS-RECS THRU SUB-2000-EXIT
+000140             END-IF
+000141
+000142             IF      RETURN-CODE = 0
+000143                 SET  W-UPDATE       TO TRUE
+000144
+000145                 PERFORM SUB-2000-PROCESS-RECS THRU SUB-2000-EXIT
+000146             END-IF
+000147
+000148             IF      RETURN-CODE = 0
+000149                 PERFORM SUB-3000-SHUT-DOWN THRU SUB-3000-EXIT
+000150             END-IF
+000151             .
+000152         MAIN-EXIT.
+000153             STOP RUN.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0006
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000155        /
-000156         SUB-1000-START-UP.
-000157        *------------------
-000158
-000159             MOVE FUNCTION WHEN-COMPILED
-000160                                     TO W-COMPILED-DATE
-000161
-000162             DISPLAY 'RDWADJST compiled on '
-000163                 W-COMPILED-DATE-YYYY '/'
-000164                 W-COMPILED-DATE-MM   '/'
-000165                 W-COMPILED-DATE-DD   ' at '
-000166                 W-COMPILED-TIME-HH   ':'
-000167                 W-COMPILED-TIME-MM   ':'
-000168                 W-COMPILED-TIME-SS
-000169
-000170             PERFORM SUB-1100-GET-ARGUMENTS THRU SUB-1100-EXIT
-000171
-000172             IF      RETURN-CODE NOT = 0
-000173                 GO TO SUB-1000-EXIT
-000174             END-IF
-000175
-000176             CALL 'CBL_OPEN_FILE' USING W-FILE-PATH
-000177                                        3 *> INPUT AND OUTPUT
+000154        /
+000155         SUB-1000-START-UP.
+000156        *------------------
+000157
+000158             MOVE FUNCTION WHEN-COMPILED
+000159                                     TO W-COMPILED-DATE
+000160
+000161             DISPLAY 'RDWADJST compiled on '
+000162                 W-COMPILED-DATE-YYYY '/'
+000163                 W-COMPILED-DATE-MM   '/'
+000164                 W-COMPILED-DATE-DD   ' at '
+000165                 W-COMPILED-TIME-HH   ':'
+000166                 W-COMPILED-TIME-MM   ':'
+000167                 W-COMPILED-TIME-SS
+000168
+000169             PERFORM SUB-1100-GET-ARGUMENTS THRU SUB-1100-EXIT
+000170
+000171             IF      RETURN-CODE NOT = 0
+000172                 GO TO SUB-1000-EXIT
+000173             END-IF
+000174
+000175             CALL 'CBL_OPEN_FILE' USING W-FILE-PATH
+000176                                        3 *> INPUT AND OUTPUT
+000177                                        0 *> FUTURE USE
 000178                                        0 *> FUTURE USE
-000179                                        0 *> FUTURE USE
-000180                                        W-FILE-HANDLE
-000181
-000182             IF      RETURN-CODE NOT = 0
-000183                 DISPLAY W-ERROR-MSG
-000184                         ' return code '
-000185                         RETURN-CODE
-000186                         ' from CBL_OPEN_FILE'
-000187             END-IF
-000188             .
-000189         SUB-1000-EXIT.
-000190             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0007
+000179                                        W-FILE-HANDLE
+000180
+000181             IF      RETURN-CODE NOT = 0
+000182                 DISPLAY W-ERROR-MSG
+000183                         ' return code '
+000184                         RETURN-CODE
+000185                         ' from CBL_OPEN_FILE'
+000186             END-IF
+000187             .
+000188         SUB-1000-EXIT.
+000189             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0007
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000191        /
-000192         SUB-1100-GET-ARGUMENTS.
-000193        *-----------------------
-000194
-000195             DISPLAY 1             UPON ARGUMENT-NUMBER
-000196
-000197             ACCEPT W-FILE-PATH    FROM ARGUMENT-VALUE
-000198                 ON EXCEPTION
-000199                     DISPLAY W-ERROR-MSG
-000200                             'Argument 1 required - RDW file name'
-000201                     MOVE 20         TO RETURN-CODE
-000202                     GO TO SUB-1100-EXIT
-000203             END-ACCEPT
-000204
-000205             DISPLAY 'RDW file: '
-000206                     W-FILE-PATH
-000207
-000208             DISPLAY 2             UPON ARGUMENT-NUMBER
-000209
-000210             ACCEPT W-FUNCTION     FROM ARGUMENT-VALUE
-000211                 ON EXCEPTION
-000212                     DISPLAY W-ERROR-MSG
-000213                             'Argument 2 required - function code'
-000214                     MOVE 30         TO RETURN-CODE
-000215                     GO TO SUB-1100-EXIT
-000216             END-ACCEPT
-000217
-000218             IF      W-FUNCTION-OK
-000219                 DISPLAY 'Function: '
-000220                         W-FUNCTION
-000221             ELSE
-000222                 DISPLAY W-ERROR-MSG
-000223                         ' Argument 2 must be GC2MF or MF2GC'
-000224                 MOVE 40             TO RETURN-CODE
-000225                 GO TO SUB-1100-EXIT
-000226             END-IF
-000227             .
-000228         SUB-1100-EXIT.
-000229             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0008
+000190        /
+000191         SUB-1100-GET-ARGUMENTS.
+000192        *-----------------------
+000193
+000194             DISPLAY 1             UPON ARGUMENT-NUMBER
+000195
+000196             ACCEPT W-FILE-PATH    FROM ARGUMENT-VALUE
+000197                 ON EXCEPTION
+000198                     DISPLAY W-ERROR-MSG
+000199                             'Argument 1 required - RDW file name'
+000200                     MOVE 20         TO RETURN-CODE
+000201                     GO TO SUB-1100-EXIT
+000202             END-ACCEPT
+000203
+000204             DISPLAY 'RDW file: '
+000205                     W-FILE-PATH
+000206
+000207             DISPLAY 2             UPON ARGUMENT-NUMBER
+000208
+000209             ACCEPT W-FUNCTION     FROM ARGUMENT-VALUE
+000210                 ON EXCEPTION
+000211                     DISPLAY W-ERROR-MSG
+000212                             'Argument 2 required - function code'
+000213                     MOVE 30         TO RETURN-CODE
+000214                     GO TO SUB-1100-EXIT
+000215             END-ACCEPT
+000216
+000217             IF      W-FUNCTION-OK
+000218                 DISPLAY 'Function: '
+000219                         W-FUNCTION
+000220             ELSE
+000221                 DISPLAY W-ERROR-MSG
+000222                         ' Argument 2 must be GC2MF or MF2GC'
+000223                 MOVE 40             TO RETURN-CODE
+000224                 GO TO SUB-1100-EXIT
+000225             END-IF
+000226             .
+000227         SUB-1100-EXIT.
+000228             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0008
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000230        /
-000231         SUB-2000-PROCESS-RECS.
-000232        *----------------------
-000233
-000234             IF      W-VALIDATE
-000235                 DISPLAY 'Validating RDWs...'
-000236             ELSE
-000237                 DISPLAY 'Updating RDWs...'
-000238             END-IF
-000239
-000240             SET  W-NOT-EOF          TO TRUE
-000241             MOVE 0                  TO W-RDWFILE-RECS
-000242                                        W-OFFSET
-000243
-000244             PERFORM SUB-9100-READ-RDWFILE THRU SUB-9100-EXIT
-000245
-000246             PERFORM SUB-2100-PROCESS-REC THRU SUB-2100-EXIT
-000247                 UNTIL W-EOF
-000248                 OR    RETURN-CODE NOT = 0
-000249
-000250             IF      W-VALIDATE
-000251                 MOVE W-RDW-LEN-MIN   TO W-DISP-NUM
-000252                 DISPLAY 'Shortest RDW length: '
-000253                         W-DISP-NUM
-000254                 MOVE W-RDW-LEN-MAX   TO W-DISP-NUM
-000255                 DISPLAY 'Longest  RDW length: '
-000256                         W-DISP-NUM
-000257             END-IF
-000258             .
-000259         SUB-2000-EXIT.
-000260             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0009
+000229        /
+000230         SUB-2000-PROCESS-RECS.
+000231        *----------------------
+000232
+000233             IF      W-VALIDATE
+000234                 DISPLAY 'Validating RDWs...'
+000235             ELSE
+000236                 DISPLAY 'Updating RDWs...'
+000237             END-IF
+000238
+000239             SET  W-NOT-EOF          TO TRUE
+000240             MOVE 0                  TO W-RDWFILE-RECS
+000241                                        W-OFFSET
+000242
+000243             PERFORM SUB-9100-READ-RDWFILE THRU SUB-9100-EXIT
+000244
+000245             PERFORM SUB-2100-PROCESS-REC THRU SUB-2100-EXIT
+000246                 UNTIL W-EOF
+000247                 OR    RETURN-CODE NOT = 0
+000248
+000249             IF      W-VALIDATE
+000250                 MOVE W-RDW-LEN-MIN   TO W-DISP-NUM
+000251                 DISPLAY 'Shortest RDW length: '
+000252                         W-DISP-NUM
+000253                 MOVE W-RDW-LEN-MAX   TO W-DISP-NUM
+000254                 DISPLAY 'Longest  RDW length: '
+000255                         W-DISP-NUM
+000256             END-IF
+000257             .
+000258         SUB-2000-EXIT.
+000259             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0009
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000261        /
-000262         SUB-2100-PROCESS-REC.
-000263        *---------------------
-000264
-000265        D    DISPLAY 'W-RDW-LEN = '
-000266        D            W-RDW-LEN
-000267
-000268             IF      W-RDW-LEN < W-RDW-LEN-MIN
-000269                 MOVE W-RDW-LEN      TO W-RDW-LEN-MIN
-000270             END-IF
-000271
-000272             IF      W-RDW-LEN > W-RDW-LEN-MAX
-000273                 MOVE W-RDW-LEN      TO W-RDW-LEN-MAX
-000274             END-IF
-000275
-000276             IF      W-RDW-LV NOT = LOW-VALUES
-000277                 PERFORM SUB-9900-CONV-RDW-TO-HEX THRU SUB-9900-EXIT
-000278                 DISPLAY '  Bytes 3-4 of RDW not = LOW-VALUES at offset '
-000279                         W-OFFSET
-000280                         ': '
-000281                         W-HEX-STRING(1 : 11)
-000282                 MOVE 110            TO RETURN-CODE
-000283                 GO TO SUB-2100-EXIT
-000284             END-IF
-000285
-000286             IF      W-RDW-LEN > 32 * 1024
-000287                 PERFORM SUB-9900-CONV-RDW-TO-HEX THRU SUB-9900-EXIT
-000288                 DISPLAY '  RDW len > 32K at offset '
-000289                         W-OFFSET
-000290                         ': '
-000291                         W-HEX-STRING(1 : 11)
-000292                 MOVE 120            TO RETURN-CODE
-000293                 GO TO SUB-2100-EXIT
-000294             END-IF
-000295
-000296             IF      W-FUNCTION-DECR-RDW
-000297                 IF      W-RDW-LEN <= 4
-000298                     PERFORM SUB-9900-CONV-RDW-TO-HEX THRU SUB-9900-EXIT
-000299                     DISPLAY '  RDW len <= 4 at offset '
-000300                             W-OFFSET
-000301                             ': '
-000302                             W-HEX-STRING(1 : 11)
-000303                     MOVE 130        TO RETURN-CODE
-000304                     GO TO SUB-2100-EXIT
-000305                 END-IF
-000306
-000307                 SUBTRACT 4        FROM W-RDW-LEN
-000308                                 GIVING W-DATA-LEN
-000309                 MOVE W-DATA-LEN     TO W-RDW-LEN
-000310             ELSE
-000311                 MOVE W-RDW-LEN      TO W-DATA-LEN
-000312                 ADD  4
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0010
+000260        /
+000261         SUB-2100-PROCESS-REC.
+000262        *---------------------
+000263
+000264        D    DISPLAY 'W-RDW-LEN = '
+000265        D            W-RDW-LEN
+000266
+000267             IF      W-RDW-LEN < W-RDW-LEN-MIN
+000268                 MOVE W-RDW-LEN      TO W-RDW-LEN-MIN
+000269             END-IF
+000270
+000271             IF      W-RDW-LEN > W-RDW-LEN-MAX
+000272                 MOVE W-RDW-LEN      TO W-RDW-LEN-MAX
+000273             END-IF
+000274
+000275             IF      W-RDW-LV NOT = LOW-VALUES
+000276                 PERFORM SUB-9900-CONV-RDW-TO-HEX THRU SUB-9900-EXIT
+000277                 DISPLAY '  Bytes 3-4 of RDW not = LOW-VALUES at offset '
+000278                         W-OFFSET
+000279                         ': '
+000280                         W-HEX-STRING(1 : 11)
+000281                 MOVE 110            TO RETURN-CODE
+000282                 GO TO SUB-2100-EXIT
+000283             END-IF
+000284
+000285             IF      W-RDW-LEN > 32 * 1024
+000286                 PERFORM SUB-9900-CONV-RDW-TO-HEX THRU SUB-9900-EXIT
+000287                 DISPLAY '  RDW len > 32K at offset '
+000288                         W-OFFSET
+000289                         ': '
+000290                         W-HEX-STRING(1 : 11)
+000291                 MOVE 120            TO RETURN-CODE
+000292                 GO TO SUB-2100-EXIT
+000293             END-IF
+000294
+000295             IF      W-FUNCTION-DECR-RDW
+000296                 IF      W-RDW-LEN <= 4
+000297                     PERFORM SUB-9900-CONV-RDW-TO-HEX THRU SUB-9900-EXIT
+000298                     DISPLAY '  RDW len <= 4 at offset '
+000299                             W-OFFSET
+000300                             ': '
+000301                             W-HEX-STRING(1 : 11)
+000302                     MOVE 130        TO RETURN-CODE
+000303                     GO TO SUB-2100-EXIT
+000304                 END-IF
+000305
+000306                 SUBTRACT 4        FROM W-RDW-LEN
+000307                                 GIVING W-DATA-LEN
+000308                 MOVE W-DATA-LEN     TO W-RDW-LEN
+000309             ELSE
+000310                 MOVE W-RDW-LEN      TO W-DATA-LEN
+000311                 ADD  4
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0010
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000313                      W-DATA-LEN GIVING W-RDW-LEN
-000314             END-IF
-000315
-000316             IF      W-UPDATE
-000317                 PERFORM SUB-9200-WRITE-RDWFILE THRU SUB-9200-EXIT
-000318             END-IF
-000319
-000320             ADD  4
-000321                  W-DATA-LEN         TO W-OFFSET
-000322
-000323             PERFORM SUB-9100-READ-RDWFILE THRU SUB-9100-EXIT
-000324             .
-000325         SUB-2100-EXIT.
-000326             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0011
+000312                      W-DATA-LEN GIVING W-RDW-LEN
+000313             END-IF
+000314
+000315             IF      W-UPDATE
+000316                 PERFORM SUB-9200-WRITE-RDWFILE THRU SUB-9200-EXIT
+000317             END-IF
+000318
+000319             ADD  4
+000320                  W-DATA-LEN         TO W-OFFSET
+000321
+000322             PERFORM SUB-9100-READ-RDWFILE THRU SUB-9100-EXIT
+000323             .
+000324         SUB-2100-EXIT.
+000325             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0011
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000327        /
-000328         SUB-3000-SHUT-DOWN.
-000329        *-------------------
-000330
-000331             CALL 'CBL_CLOSE_FILE'
-000332                                  USING W-FILE-HANDLE
-000333
-000334             DISPLAY 'RDWADJST completed'
-000335             .
-000336         SUB-3000-EXIT.
-000337             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0012
+000326        /
+000327         SUB-3000-SHUT-DOWN.
+000328        *-------------------
+000329
+000330             CALL 'CBL_CLOSE_FILE'
+000331                                  USING W-FILE-HANDLE
+000332
+000333             DISPLAY 'RDWADJST completed'
+000334             .
+000335         SUB-3000-EXIT.
+000336             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0012
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000338        /
-000339         SUB-9100-READ-RDWFILE.
-000340        *----------------------
-000341
-000342             CALL 'CBL_READ_FILE' USING W-FILE-HANDLE
-000343                                        W-OFFSET
-000344                                        W-NBYTES
-000345                                        W-FLAG
-000346                                        W-RDW
-000347
-000348             EVALUATE RETURN-CODE
-000349               WHEN 0
-000350                 CONTINUE
-000351
-000352               WHEN 10
-000353                 PERFORM SUB-9110-DISPLAY-RECS THRU SUB-9110-EXIT
-000354                 SET  W-EOF          TO TRUE
-000355                 MOVE 0              TO RETURN-CODE
-000356                 GO TO SUB-9100-EXIT
-000357
-000358               WHEN OTHER
-000359                 DISPLAY W-ERROR-MSG
-000360                         ' return code '
-000361                         RETURN-CODE
-000362                         ' from CBL_READ_FILE'
-000363                 GO TO SUB-9100-EXIT
-000364             END-EVALUATE
-000365
-000366             ADD  1                  TO W-RDWFILE-RECS
-000367
-000368             DIVIDE W-RDWFILE-RECS   BY 10000
-000369                                 GIVING W-QUOTIENT
-000370                              REMAINDER W-REMAINDER
-000371
-000372             IF      W-REMAINDER = 0
-000373                 PERFORM SUB-9110-DISPLAY-RECS THRU SUB-9110-EXIT
-000374             END-IF
-000375             .
-000376         SUB-9100-EXIT.
-000377             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0013
+000337        /
+000338         SUB-9100-READ-RDWFILE.
+000339        *----------------------
+000340
+000341             CALL 'CBL_READ_FILE' USING W-FILE-HANDLE
+000342                                        W-OFFSET
+000343                                        W-NBYTES
+000344                                        W-FLAG
+000345                                        W-RDW
+000346
+000347             EVALUATE RETURN-CODE
+000348               WHEN 0
+000349                 CONTINUE
+000350
+000351               WHEN 10
+000352                 PERFORM SUB-9110-DISPLAY-RECS THRU SUB-9110-EXIT
+000353                 SET  W-EOF          TO TRUE
+000354                 MOVE 0              TO RETURN-CODE
+000355                 GO TO SUB-9100-EXIT
+000356
+000357               WHEN OTHER
+000358                 DISPLAY W-ERROR-MSG
+000359                         ' return code '
+000360                         RETURN-CODE
+000361                         ' from CBL_READ_FILE'
+000362                 GO TO SUB-9100-EXIT
+000363             END-EVALUATE
+000364
+000365             ADD  1                  TO W-RDWFILE-RECS
+000366
+000367             DIVIDE W-RDWFILE-RECS   BY 10000
+000368                                 GIVING W-QUOTIENT
+000369                              REMAINDER W-REMAINDER
+000370
+000371             IF      W-REMAINDER = 0
+000372                 PERFORM SUB-9110-DISPLAY-RECS THRU SUB-9110-EXIT
+000373             END-IF
+000374             .
+000375         SUB-9100-EXIT.
+000376             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0013
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000378        /
-000379         SUB-9110-DISPLAY-RECS.
-000380        *----------------------
-000381
-000382             MOVE W-RDWFILE-RECS     TO W-DISP-NUM
-000383
-000384             IF      W-VALIDATE
-000385                 DISPLAY '  RDWs validated: '
-000386                         W-DISP-NUM
-000387             ELSE
-000388                 DISPLAY '  RDWs updated:   '
-000389                         W-DISP-NUM
-000390             END-IF
-000391             .
-000392         SUB-9110-EXIT.
-000393             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0014
+000377        /
+000378         SUB-9110-DISPLAY-RECS.
+000379        *----------------------
+000380
+000381             MOVE W-RDWFILE-RECS     TO W-DISP-NUM
+000382
+000383             IF      W-VALIDATE
+000384                 DISPLAY '  RDWs validated: '
+000385                         W-DISP-NUM
+000386             ELSE
+000387                 DISPLAY '  RDWs updated:   '
+000388                         W-DISP-NUM
+000389             END-IF
+000390             .
+000391         SUB-9110-EXIT.
+000392             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0014
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000394        /
-000395         SUB-9200-WRITE-RDWFILE.
-000396        *-----------------------
-000397
-000398             CALL 'CBL_WRITE_FILE'
-000399                                  USING W-FILE-HANDLE
-000400                                        W-OFFSET
-000401                                        W-NBYTES
-000402                                        W-FLAG
-000403                                        W-RDW
-000404
-000405             IF      RETURN-CODE = 0
-000406                 CONTINUE
-000407             ELSE
-000408                 DISPLAY W-ERROR-MSG
-000409                         ' return code '
-000410                         RETURN-CODE
-000411                         ' from CBL_WRITE_FILE'
-000412                 GO TO SUB-9200-EXIT
-000413             END-IF
-000414             .
-000415         SUB-9200-EXIT.
-000416             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0015
+000393        /
+000394         SUB-9200-WRITE-RDWFILE.
+000395        *-----------------------
+000396
+000397             CALL 'CBL_WRITE_FILE'
+000398                                  USING W-FILE-HANDLE
+000399                                        W-OFFSET
+000400                                        W-NBYTES
+000401                                        W-FLAG
+000402                                        W-RDW
+000403
+000404             IF      RETURN-CODE = 0
+000405                 CONTINUE
+000406             ELSE
+000407                 DISPLAY W-ERROR-MSG
+000408                         ' return code '
+000409                         RETURN-CODE
+000410                         ' from CBL_WRITE_FILE'
+000411                 GO TO SUB-9200-EXIT
+000412             END-IF
+000413             .
+000414         SUB-9200-EXIT.
+000415             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0015
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
-000417        /
-000418         SUB-9900-CONV-RDW-TO-HEX.
-000419        *-------------------------
-000420
-000421             PERFORM VARYING W-R-DX FROM 1 BY 1
-000422                       UNTIL W-R-DX > 4
-000423
-000424                 DIVIDE W-RDW-CHAR(W-R-DX)
-000425                                     BY 16
-000426                                 GIVING W-QUOTIENT
-000427                              REMAINDER W-REMAINDER
-000428
-000429                 SET  W-H-DX         TO W-R-DX
-000430                 MOVE W-HEX-CHAR(W-QUOTIENT + 1)
-000431                                     TO W-HEX-CHAR-1(W-H-DX)
-000432                 MOVE W-HEX-CHAR(W-REMAINDER + 1)
-000433                                     TO W-HEX-CHAR-2(W-H-DX)
-000434                 MOVE '-'            TO W-HEX-DASH  (W-H-DX)
-000435             END-PERFORM
-000436             .
-000437         SUB-9900-EXIT.
-000438             EXIT.
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0016
+000416        /
+000417         SUB-9900-CONV-RDW-TO-HEX.
+000418        *-------------------------
+000419
+000420             PERFORM VARYING W-R-DX FROM 1 BY 1
+000421                       UNTIL W-R-DX > 4
+000422
+000423                 DIVIDE W-RDW-CHAR(W-R-DX)
+000424                                     BY 16
+000425                                 GIVING W-QUOTIENT
+000426                              REMAINDER W-REMAINDER
+000427
+000428                 SET  W-H-DX         TO W-R-DX
+000429                 MOVE W-HEX-CHAR(W-QUOTIENT + 1)
+000430                                     TO W-HEX-CHAR-1(W-H-DX)
+000431                 MOVE W-HEX-CHAR(W-REMAINDER + 1)
+000432                                     TO W-HEX-CHAR-2(W-H-DX)
+000433                 MOVE '-'            TO W-HEX-DASH  (W-H-DX)
+000434             END-PERFORM
+000435             .
+000436         SUB-9900-EXIT.
+000437             EXIT.
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0016
 
 SIZE  TYPE           LVL  NAME                           PICTURE
 
@@ -551,7 +550,7 @@ SIZE  TYPE           LVL  NAME                           PICTURE
 00007 ALPHANUMERIC   05   FILLER                         X(07)
 
 00004 GROUP          01   W-RDW
-GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Jan 19 12:22:57 2020  Page 0017
+GnuCOBOL 3.0-rc1.0      RDWADJST.cob                                                  Sun Feb 09 09:57:10 2020  Page 0017
 
 SIZE  TYPE           LVL  NAME                           PICTURE
 

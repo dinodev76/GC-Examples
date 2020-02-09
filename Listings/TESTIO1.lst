@@ -1,4 +1,4 @@
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0001
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Feb 09 09:58:30 2020  Page 0001
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -16,7 +16,7 @@ LINE    PG/LN  A...B............................................................
 000012        *
 000013        * Date        Version  Description
 000014        * ----        -------  -----------
-000015        * 2020-01-18  0.1      First release
+000015        * 2020-02-08  1.0      First release
 000016        *================================================================*
 000017
 000018         IDENTIFICATION DIVISION.
@@ -41,7 +41,7 @@ LINE    PG/LN  A...B............................................................
 000037             SELECT TESTIO1I         ASSIGN 'Data\TESTIO1.Input.txt'
 000038        *                             ORGANIZATION SEQUENTIAL.
 000039                                     ORGANIZATION LINE SEQUENTIAL.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0002
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Feb 09 09:58:30 2020  Page 0002
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -79,7 +79,7 @@ LINE    PG/LN  A...B............................................................
 000071             05  W-COMPILED-TIME-MM  PIC X(02).
 000072             05  W-COMPILED-TIME-SS  PIC X(02).
 000073             05  FILLER              PIC X(07).
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0003
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Feb 09 09:58:30 2020  Page 0003
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -101,7 +101,7 @@ LINE    PG/LN  A...B............................................................
 000089             .
 000090         MAIN-EXIT.
 000091             STOP RUN.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0004
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Feb 09 09:58:30 2020  Page 0004
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -124,7 +124,7 @@ LINE    PG/LN  A...B............................................................
 000108             .
 000109         SUB-1000-EXIT.
 000110             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0005
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Feb 09 09:58:30 2020  Page 0005
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -146,7 +146,7 @@ LINE    PG/LN  A...B............................................................
 000126             .
 000127         SUB-2000-EXIT.
 000128             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0006
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Feb 09 09:58:30 2020  Page 0006
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -163,7 +163,7 @@ LINE    PG/LN  A...B............................................................
 000139             .
 000140         SUB-3000-EXIT.
 000141             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0007
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Feb 09 09:58:30 2020  Page 0007
 
 LINE    PG/LN  A...B............................................................SEQUENCE
 
@@ -180,7 +180,7 @@ LINE    PG/LN  A...B............................................................
 000152             .
 000153         SUB-9100-EXIT.
 000154             EXIT.
-GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Fri Jan 24 23:12:39 2020  Page 0008
+GnuCOBOL 3.0-rc1.0      TESTIO1.cob                                                   Sun Feb 09 09:58:30 2020  Page 0008
 
 SIZE  TYPE           LVL  NAME                           PICTURE
 

@@ -25,8 +25,7 @@
       *
       * Date        Version  Description
       * ----        -------  -----------
-      * 2020-01-18  0.1      First release
-      *
+      * 2020-02-08  1.0      First release
       *================================================================*
 
        IDENTIFICATION DIVISION.
