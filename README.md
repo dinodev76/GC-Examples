@@ -40,7 +40,6 @@ These instructions will get you a copy of the project up and running on your loc
         CopyBooks  
         Data
         Listings
-        Utilities  
 </pre>
 
 5. Run VS Code and select File/Open Folder..., and open the above GC-Examples folder to get started. It is important to do the Open Folder instead of opening individual files!
@@ -84,12 +83,6 @@ These instructions will get you a copy of the project up and running on your loc
 6. **TESTIO2**: Test writing a variable length record sequential file. This shows that GnuCOBOL creates RDWs similar to the IBM mainframe (when COB_VARSEQ_FORMAT=0, the default), but the RDW record length does not include itself, i.e. it is 4 less than the mainframe.
 
     To compile and run it from VS Code, click on TESTIO2.cob and select Terminal/Run Task.../Compile and Run Selected Program.
-
-7. **TRNSLATT**: Test converting a file from ASCII to EBCDIC, using subroutine **TRNSLAT**.
-
-    To compile and run it from VS Code, select Terminal/Run Task.../Compile and Run TRNSLATT.
-
-    The utilities folder contains C# program CobolTranslateGen that generates translation table copybooks to be used by a program like TRNSLATT. The programs support single byte character sets only.
 
 ## Authors
 
