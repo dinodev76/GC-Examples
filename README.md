@@ -44,7 +44,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 5. Run VS Code and select File/Open Folder..., and open the above GC-Examples folder to get started. It is important to do the Open Folder instead of opening individual files!
 
-## Running the example programs
+## Compiling and Running the Example Programs
 
 1. **BLDFILES**: This programs reads a line sequential file and copies the contents to new indexed and relative output files.
 
