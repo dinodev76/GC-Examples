@@ -48,7 +48,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. **BLDFILES**: This programs reads a line sequential file and copies the contents to new indexed and relative output files.
 
-    To compile and run it from VS Code, click on BLDFILES.cob and select Terminal/Run Task.../Compile and Run Selected Program.
+    To compile and run it from VS Code, click on BLDFILES.cob and select Terminal/Run Task.../Compile and Run Selected Main Program.
 
 2. **RDWADJST**: This program adjusts the Record Descriptor Word (RDW) on variable length record files, to support uploading and downloading such files to/from an IBM mainframe. GnuCOBOL expects RDWs to have a record length excluding the RDW while the mainframe RDWs have a record length including the RDW, i.e. the GnuCOBOL RDW record length is 4 less than the mainframe.
 
@@ -70,19 +70,19 @@ These instructions will get you a copy of the project up and running on your loc
 
 3. **READIDX**: Reads the indexed file created by program BLDFILES in the specfied manner, and displays the records read.
 
-    To compile and run it from VS Code, click on READIDX.cob and select Terminal/Run Task.../Compile and Run Selected Program.
+    To compile and run it from VS Code, click on READIDX.cob and select Terminal/Run Task.../Compile and Run Selected Main Program.
 
 4. **READREL**: Reads the relative file created by program BLDFILES in the specfied manner, and displays the records read.
 
-    To compile and run it from VS Code, click on READIDX.cob and select Terminal/Run Task.../Compile and Run Selected Program.
+    To compile and run it from VS Code, click on READIDX.cob and select Terminal/Run Task.../Compile and Run Selected Main Program.
 
 5. **TESTIO1**: Test reading a line sequential file. This shows that GnuCOBOL treats CR/LF (on Windows) as end of record markers, whereas those are ignored on regular sequential files. Try removing the LINE from "ORGANIZATION LINE SEQUENTIAL" to see the difference with the provided input file.
 
-    To compile and run it from VS Code, click on TESTIO1.cob and select Terminal/Run Task.../Compile and Run Selected Program.
+    To compile and run it from VS Code, click on TESTIO1.cob and select Terminal/Run Task.../Compile and Run Selected Main Program.
 
 6. **TESTIO2**: Test writing a variable length record sequential file. This shows that GnuCOBOL creates RDWs similar to the IBM mainframe (when COB_VARSEQ_FORMAT=0, the default), but the RDW record length does not include itself, i.e. it is 4 less than the mainframe.
 
-    To compile and run it from VS Code, click on TESTIO2.cob and select Terminal/Run Task.../Compile and Run Selected Program.
+    To compile and run it from VS Code, click on TESTIO2.cob and select Terminal/Run Task.../Compile and Run Selected Main Program.
 
 ## Authors
 
