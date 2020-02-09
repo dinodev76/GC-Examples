@@ -1,5 +1,5 @@
 # Changelog
  
-## v0.1 - 18-Jan-2020
+## v1.0 - 8-Feb-2020
  
 First release
